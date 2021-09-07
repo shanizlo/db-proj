@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS song (
+CREATE TABLE IF NOT EXISTS songs (
     song_id INTEGER NOT NULL PRIMARY KEY,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
@@ -6,10 +6,10 @@ CREATE TABLE IF NOT EXISTS song (
     copyright TEXT,
     UNIQUE(title, author),
     CHECK(title <> ''),
-    CHECK(author <> ''),
+    CHECK(author <> '')
 );
 
-CREATE TABLE IF NOT EXISTS word (
+CREATE TABLE IF NOT EXISTS words (
     word_id INTEGER NOT NULL PRIMARY KEY,
     word_value TEXT NOT NULL,
     word_length INTEGER,
@@ -22,25 +22,22 @@ CREATE TABLE IF NOT EXISTS contains (
     verse_num INTEGER,
     sentence_num INTEGER,
     word_position INTEGER,
-    FOREIGN KEY(song_id) REFERENCES song,
-    FOREIGN KEY(word_id) REFERENCES word,
-
+    FOREIGN KEY(song_id) REFERENCES songs,
+    FOREIGN KEY(word_id) REFERENCES words
 );
 
 CREATE TABLE IF NOT EXISTS words_group (
     group_id INTEGER NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE,
-    word_id INTEGER NOT NULL FOREIGN KEY,
-    word_position INTEGER,
-    FOREIGN KEY(word_id) REFERENCES word,
-    CHECK(name <> '')
+    group_name TEXT NOT NULL UNIQUE,
+    word_id INTEGER NOT NULL,
+    word_position INTEGER NOT NULL,
+    FOREIGN KEY(word_id) REFERENCES words,
+    CHECK(group_name <> '')
 );
 
 CREATE TABLE IF NOT EXISTS phrase (
     id INTEGER NOT NULL PRIMARY KEY,
-    word_id INTEGER NOT NULL FOREIGN KEY,
+    word_id INTEGER NOT NULL,
     word_position INTEGER,
-    FOREIGN KEY(word_id) REFERENCES word
+    FOREIGN KEY(word_id) REFERENCES words
 );
-
--- TODO: Statistics
