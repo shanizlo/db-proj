@@ -1,16 +1,17 @@
 CREATE TABLE IF NOT EXISTS songs (
-    song_id INTEGER NOT NULL PRIMARY KEY,
+    song_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
     creation_date DATETIME,
     copyright TEXT,
+    album TEXT,
     UNIQUE(title, author),
     CHECK(title <> ''),
     CHECK(author <> '')
 );
 
 CREATE TABLE IF NOT EXISTS words (
-    word_id INTEGER NOT NULL PRIMARY KEY,
+    word_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     word_value TEXT NOT NULL,
     word_length INTEGER,
     CHECK(word_value <> '')
@@ -27,7 +28,7 @@ CREATE TABLE IF NOT EXISTS contains (
 );
 
 CREATE TABLE IF NOT EXISTS words_group (
-    group_id INTEGER NOT NULL PRIMARY KEY,
+    group_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     group_name TEXT NOT NULL UNIQUE,
     word_id INTEGER NOT NULL,
     word_position INTEGER NOT NULL,
@@ -36,8 +37,10 @@ CREATE TABLE IF NOT EXISTS words_group (
 );
 
 CREATE TABLE IF NOT EXISTS phrase (
-    id INTEGER NOT NULL PRIMARY KEY,
+    phrase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     word_id INTEGER NOT NULL,
     word_position INTEGER,
     FOREIGN KEY(word_id) REFERENCES words
 );
+
+-- TODO: Statistics
