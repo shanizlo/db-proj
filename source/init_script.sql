@@ -27,20 +27,29 @@ CREATE TABLE IF NOT EXISTS contains (
     FOREIGN KEY(word_id) REFERENCES words
 );
 
-CREATE TABLE IF NOT EXISTS words_group (
+CREATE TABLE IF NOT EXISTS wordsInGroup (
+    group_id INTEGER NOT NULL,
+    word_id INTEGER NOT NULL,
+    FOREIGN KEY(word_id) REFERENCES words,
+    FOREIGN KEY(group_id) REFERENCES groups
+);
+
+CREATE TABLE IF NOT EXISTS groups (
     group_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     group_name TEXT NOT NULL UNIQUE,
-    word_id INTEGER NOT NULL,
-    word_position INTEGER NOT NULL,
-    FOREIGN KEY(word_id) REFERENCES words,
     CHECK(group_name <> '')
 );
 
-CREATE TABLE IF NOT EXISTS phrase (
-    phrase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS phrases (
+    phrase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+);
+
+CREATE TABLE IF NOT EXISTS phrases (
+    phrase_id INTEGER NOT NULL,
     word_id INTEGER NOT NULL,
     word_position INTEGER,
-    FOREIGN KEY(word_id) REFERENCES words
+    FOREIGN KEY(word_id) REFERENCES words,
+    FOREIGN KEY(phrase_id) REFERENCES phrases
 );
 
 -- TODO: Statistics
