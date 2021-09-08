@@ -21,3 +21,6 @@ def parse(path):  # returns a list of lists of the form [theWord, length, verse_
                 the_words.append( [the_split[i], len(the_split[i]), which_verse, which_sentence, i + 1] )
     file.close()
     return the_words
+
+
+# TODO: move this file to source directory
