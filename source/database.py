@@ -1,6 +1,7 @@
 import sqlite3
-import TxtParser
-from entities import *
+
+from source import TxtParser
+from source.entities import *
 
 # _conn = sqlite3.Connection
 # _cursor = sqlite3.Cursor
