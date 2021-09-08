@@ -14,7 +14,7 @@ class App(Tk):
 
         self.frames = {}
 
-        for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace):
+        for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -34,6 +34,7 @@ class HomePage(Frame):
         page_show_words = Button(self, text="Show Words in Song 🔤", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=2)
         page_upload = Button(self, text="Statistics 📊", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=3)
         find_word = Button(self, text="Find Word 🔍", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
+        word_context = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
 
 
 class UploadSongPage(Frame):
@@ -97,6 +98,7 @@ class StatisticsPage(Frame):
 
         page_title_label = Label(self, text="Statistics 📊").grid(row=0, column=2)
         home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+#         TODO: add statistics fields
 
 
 class ShowWordsInSongPage(Frame):
@@ -217,6 +219,80 @@ class ShowWordByPlace(Frame):
 
         found_word_preview = Text(self, height=1, width=10)
         found_word_preview.grid(row=12, column=2)
+
+class ShowContext(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        def search_song_words_desc():
+            author = author_value.get()
+            title = title_value.get()
+            # TODO: function should return words of the song in desc order, add necessary query in database.py as needed
+            print("searching for song words for author {}, title {}".format(author, title))
+            #  TODO: add real output from show words
+            song_words = """HTML Tutorial
+                CSS Tutorial
+                HTML Tutorial
+                CSS Tutorial
+                JavaScript Tutorial
+                How To Tutorial
+                SQL Tutorial
+                Python Tutorial
+                W3.CSS Tutorial
+                Bootstrap Tutorial
+                PHP Tutorial
+                Java Tutorial
+                C++ Tutorial
+                jQuery TutorialHTML Tutorial
+                CSS Tutorial
+                JavaScript Tutorial
+                How To Tutorial
+                SQL Tutorial
+                Python Tutorial
+                W3.CSS Tutorial
+                Bootstrap Tutorial
+                PHP Tutorial
+                Java Tutorial
+                C++ Tutorial
+                jQuery Tutorial"""
+            song_words_preview.insert(END, song_words)
+
+        def search_word_context():
+            #  TODO - add search for appearences of the word
+            return True
+
+        def set_chosen_word(choice):
+            choice = options_words.get()
+            print(choice)
+
+        page_title_label = Label(self, text="Show Context of Word. Search for song, then choose the word to show context for. 🔤").grid(row=0, column=2)
+        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+
+        author_value = StringVar()
+        title_value = StringVar()
+
+        author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
+        title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
+        author_label = Label(self, text="Author").grid(row=1, column=1)
+        title_label = Label(self, text="Song title").grid(row=2, column=1)
+
+        search_button = Button(self, text="Search song 🔍", command=search_song_words_desc).grid(row=4, column=2)
+
+        song_words_preview = Text(self, height=15, width=70)
+        song_words_preview.grid(row=11, column=2)
+
+        options_words = StringVar()
+        options_words.set("Choose word")
+
+        # TODO: use output of find song words then  list = output.split()
+        list = ['HTML', 'Tutorial', 'CSS', 'Tutorial', 'JavaScript', 'Tutorial', 'How', 'To', 'Tutorial', 'SQL', 'Tutorial', 'Python', 'Tutorial', 'W3.CSS', 'Tutorial', 'Bootstrap', 'Tutorial', 'PHP', 'Tutorial', 'Java', 'Tutorial', 'C++', 'Tutorial', 'jQuery', 'Tutorial']
+        words_menu = OptionMenu(self, options_words, *list, command=set_chosen_word)
+        words_menu.grid(row=5, column=2)
+
+        search_word_contexts = Button(self, text="Search word context", command=search_word_context()).grid(row=6, column=2)
+
+
+
 
 
 app = App()
