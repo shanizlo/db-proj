@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS phrases (
     phrase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
 );
 
+-- TODO: fix duplicate tables names
 CREATE TABLE IF NOT EXISTS phrases (
     phrase_id INTEGER NOT NULL,
     word_id INTEGER NOT NULL,

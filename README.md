@@ -5,5 +5,5 @@ recommended to use miniconda for envs.
 
 NEVER PUSH DIRECTLY TO MAIN (MASTER) BRANCH!
 
-Please work with branches (no code review, just to be sure we are not overriding each otjer changes).
+Please work with branches (no code review, just to be sure we are not overriding each other's changes).
 If pulling use git pull --rebase to make sure your changes are not removed.
