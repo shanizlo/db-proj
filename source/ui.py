@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 
+
 window = Tk()
 window.title("Welcome to Songs Database")
 window.geometry('1000x1000')
@@ -15,6 +16,7 @@ def submit_values():
                                                                               copyright_info, song_lyrics))
 
 
+
 def open_file():
     text_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a text file with song lyrics",
                                        filetypes=[("txt files", "*.txt")])
@@ -27,7 +29,6 @@ def open_file():
     print("Song submitted 🤩")
 
 
-# TODO: add date field
 author_label = Label(window, text="Author").grid(row=0, column=0)
 title_label = Label(window, text="Song title").grid(row=1, column=0)
 album_label = Label(window, text="Album").grid(row=2, column=0)
