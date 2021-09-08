@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
 
-
 class App(Tk):
     def __init__(self, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
@@ -105,6 +104,12 @@ class ShowWordsInSongPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
+        def search_song_words_desc():
+            author = author_value.get()
+            title = title_value.get()
+            # TODO: function should return words of the song in desc order, add necessary query in database.py as needed
+            print("searching for song words for author {}, title {}".format(author, title))
+
         page_title_label = Label(self, text="Show Words in Song 🔤").grid(row=0, column=2)
         home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
@@ -115,6 +120,9 @@ class ShowWordsInSongPage(Frame):
         title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
         author_label = Label(self, text="Author").grid(row=1, column=1)
         title_label = Label(self, text="Song title").grid(row=2, column=1)
+
+        search_button = Button(self, text="Search song 🔍", command=search_song_words_desc).grid(row=11, column=2)
+
 
 
 
