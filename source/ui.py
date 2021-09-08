@@ -14,7 +14,7 @@ class App(Tk):
 
         self.frames = {}
 
-        for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage):
+        for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -30,11 +30,10 @@ class HomePage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        statistics_page = Button(self, text="Statistics 📊", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=2)
-
-        page_show_words = Button(self, text="Show Words in Song 🔤", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=3)
-
         page_upload = Button(self, text="Upload Song 🎙", command=lambda: controller.show_frame(UploadSongPage)).grid(row=1, column=1)
+        page_show_words = Button(self, text="Show Words in Song 🔤", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=2)
+        page_upload = Button(self, text="Statistics 📊", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=3)
+        find_word = Button(self, text="Find Word 🔍", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
 
 
 class UploadSongPage(Frame):
@@ -109,6 +108,54 @@ class ShowWordsInSongPage(Frame):
             title = title_value.get()
             # TODO: function should return words of the song in desc order, add necessary query in database.py as needed
             print("searching for song words for author {}, title {}".format(author, title))
+            #  TODO: add real output from show words
+            song_words = """HTML Tutorial
+                CSS Tutorial
+                HTML Tutorial
+                CSS Tutorial
+                JavaScript Tutorial
+                How To Tutorial
+                SQL Tutorial
+                Python Tutorial
+                W3.CSS Tutorial
+                Bootstrap Tutorial
+                PHP Tutorial
+                Java Tutorial
+                C++ Tutorial
+                jQuery TutorialHTML Tutorial
+                CSS Tutorial
+                JavaScript Tutorial
+                How To Tutorial
+                SQL Tutorial
+                Python Tutorial
+                W3.CSS Tutorial
+                Bootstrap Tutorial
+                PHP Tutorial
+                Java Tutorial
+                C++ Tutorial
+                jQuery TutorialHTML Tutorial
+                CSS Tutorial
+                JavaScript Tutorial
+                How To Tutorial
+                SQL Tutorial
+                Python Tutorial
+                W3.CSS Tutorial
+                Bootstrap Tutorial
+                PHP Tutorial
+                Java Tutorial
+                C++ Tutorial
+                jQuery Tutorial
+                JavaScript Tutorial
+                How To Tutorial
+                SQL Tutorial
+                Python Tutorial
+                W3.CSS Tutorial
+                Bootstrap Tutorial
+                PHP Tutorial
+                Java Tutorial
+                C++ Tutorial
+                jQuery Tutorial"""
+            song_words_preview.insert(END, song_words)
 
         page_title_label = Label(self, text="Show Words in Song 🔤").grid(row=0, column=2)
         home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
@@ -123,8 +170,53 @@ class ShowWordsInSongPage(Frame):
 
         search_button = Button(self, text="Search song 🔍", command=search_song_words_desc).grid(row=11, column=2)
 
+        song_words_preview = Text(self, height=15, width=70)
+        song_words_preview.grid(row=7, column=2)
 
+class ShowWordByPlace(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
 
+        def search_word():
+            author = author_value.get()
+            title = title_value.get()
+            verse = verse_num.get()
+            line = line_value.get()
+            word_pos = word_num_value.get()
+            # TODO: function should return word by its position
+            print("searching for word for author {}, title {}, verse {}, line {}, word num {}".format(author, title, verse, line, word_pos))
+            #  TODO: add real output from show words
+            found_word = "Hello"
+            found_word_preview.insert(END, found_word)
+
+        page_title_label = Label(self, text="Find Word by its Position 🔍").grid(row=0, column=2)
+        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0,
+                                                                                                         column=0)
+        author_value = StringVar()
+        title_value = StringVar()
+        verse_num = StringVar()
+        line_value = StringVar()
+        word_num_value = StringVar()
+
+        author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
+        title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
+        author_label = Label(self, text="Author").grid(row=1, column=1)
+        title_label = Label(self, text="Song title").grid(row=2, column=1)
+
+        verse_label = Label(self, text="Num of Verse").grid(row=1, column=3)
+        line_label = Label(self, text="Num of Line").grid(row=2, column=3)
+        word_position_label = Label(self, text="Num of Word").grid(row=3, column=3)
+
+        verse_field = Entry(self, textvariable=verse_num).grid(row=1, column=4)
+        line_field = Entry(self, textvariable=line_value).grid(row=2, column=4)
+        word_position_field = Entry(self, textvariable=word_num_value).grid(row=3, column=4)
+
+        word_label = Label(self, text="Word found:").grid(row=12, column=1)
+
+        search_button = Button(self, text="Search song 🔍", command=search_word).grid(row=11, column=2)
+
+        found_word_preview = Text(self, height=1, width=10)
+        found_word_preview.grid(row=12, column=2)
 
 
 app = App()
