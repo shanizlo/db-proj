@@ -1,11 +1,9 @@
 class Song:
-    def __init__(self, author, title, album = None, copyright = None, creation_date = None):
-        # TODO: check for a date format
+    def __init__(self, author, title, album = None, copyright = None):
         self.author = author
         self.title = title
         self.album = album
         self.copyright = copyright
-        self.creation_date = creation_date
 
 class Word:
     def __init__(self, value):

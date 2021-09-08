@@ -2,7 +2,6 @@ CREATE TABLE IF NOT EXISTS songs (
     song_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
-    creation_date DATETIME,
     copyright TEXT,
     album TEXT,
     UNIQUE(title, author),
@@ -12,7 +11,7 @@ CREATE TABLE IF NOT EXISTS songs (
 
 CREATE TABLE IF NOT EXISTS words (
     word_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    word_value TEXT NOT NULL,
+    word_value TEXT NOT NULL UNIQUE,
     word_length INTEGER,
     CHECK(word_value <> '')
 );
