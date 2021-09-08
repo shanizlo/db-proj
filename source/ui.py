@@ -15,7 +15,7 @@ class App(Tk):
 
         self.frames = {}
 
-        for F in (HomePage, PageOne, PageTwo, UploadSongPage):
+        for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -31,12 +31,12 @@ class HomePage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        # page_one = Button(self, text="Page One", command=lambda: controller.show_frame(PageOne)).grid(row=1, column=1)
-        #
-        # page_two = Button(self, text="Page Two", command=lambda: controller.show_frame(PageTwo)).grid(row=1, column=1)
+        statistics_page = Button(self, text="Statistics 📊", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=2)
 
-        page_upload = Button(self, text="Upload Song", command=lambda: controller.show_frame(UploadSongPage)).grid(
-            row=1, column=1)
+        page_show_words = Button(self, text="Show Words in Song 🔤", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=3)
+
+        page_upload = Button(self, text="Upload Song 🎙", command=lambda: controller.show_frame(UploadSongPage)).grid(row=1, column=1)
+
 
 class UploadSongPage(Frame):
     def __init__(self, parent, controller):
@@ -66,6 +66,8 @@ class UploadSongPage(Frame):
             print("Song submitted 🤩")
 
         # TODO: add date field
+        page_title_label = Label(self, text="Upload Song 🎙").grid(row=0, column=2)
+
         author_label = Label(self, text="Author").grid(row=1, column=1)
         title_label = Label(self, text="Song title").grid(row=2, column=1)
         album_label = Label(self, text="Album").grid(row=3, column=1)
@@ -88,33 +90,36 @@ class UploadSongPage(Frame):
 
         open_file_button = Button(self, text="Browse file...", command=open_file).grid(row=5, column=3)
         save_button = Button(self, text="Save song", command=submit_values).grid(row=11, column=2)
-        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(
-            row=0, column=0)
+        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
 
-class PageOne(Frame):
+class StatisticsPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        # label = Label(self, text="Page One")
-        # label.pack(padx=10, pady=10)
-        #
-        # home_button = Button(self, text="Home Page", command=lambda: controller.show_frame(HomePage))
-        # home_button.pack()
+        page_title_label = Label(self, text="Statistics 📊").grid(row=0, column=2)
+        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
 
-class PageTwo(Frame):
+class ShowWordsInSongPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        # label = Label(self, text="Page Two")
-        # label.pack(padx=10, pady=10)
-        #
-        # home_button = Button(self, text="Home Page", command=lambda: controller.show_frame(HomePage))
-        # home_button.pack()
+        page_title_label = Label(self, text="Show Words in Song 🔤").grid(row=0, column=2)
+        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+
+        author_value = StringVar()
+        title_value = StringVar()
+
+        author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
+        title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
+        author_label = Label(self, text="Author").grid(row=1, column=1)
+        title_label = Label(self, text="Song title").grid(row=2, column=1)
+
+
 
 
 app = App()
-app.title("Welcome to Songs Database")
+app.title("Welcome to Songs Database 🎙")
 app.geometry('1000x700')
 app.mainloop()
