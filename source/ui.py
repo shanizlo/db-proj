@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from source.database import *
 
 class App(Tk):
     def __init__(self, *args, **kwargs):
@@ -9,8 +10,6 @@ class App(Tk):
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-        # container.columnconfigure(0, weight=1)
-        # container.rowconfigure(0, weight=1)
 
         self.frames = {}
 
@@ -47,6 +46,7 @@ class UploadSongPage(Frame):
             album_info = album_value.get()
             copyright_info = copyright_value.get()
             song_lyrics = song_text_preview.get("1.0", END)
+            insert_into_database(author_info, title_info, album_info, copyright_info, song_lyrics)
             print('Submitted: Author: {}, title: {}, album: {}, copyright: {}, song lyrics: {}'.format(author_info,
                                                                                                        title_info,
                                                                                                        album_info,

@@ -42,8 +42,10 @@ def insert_word(word):
 def get_id_from_word(str):
     with connection:
         cursor.execute("SELECT word_id FROM words WHERE word_value = \"" + str + "\"")
-        id = cursor.fetchall()
-        return id[0][0]
+        id = cursor.fetchone()
+        # id = cursor.fetchall()
+        # return id[0][0]
+        return id[0]
 
 
 def insert_contains(word_id, song_id, verse_num, sentence_num, word_position):
@@ -69,10 +71,10 @@ def create_group(group_name):
 ###### Tests ######## Tests ######### Tests ######### Tests ############ Tests ###############
 word1 = Word("hello")
 group1 = Group("chuck")
-
 insert_word(word1)
 insert_contains(1, 1, 1, 1, 1)
 create_group(group1)
+insert_into_database("chuck", "title", "alb", "cpergjj5", "hello import sqlite3  \n hjgsdf")
 
 print(word1.value)
 
@@ -89,4 +91,4 @@ for row in cursor.execute("SELECT * FROM groups"):
     print(row)
 
 connection.commit()
-connection.close()
+# connection.close()
