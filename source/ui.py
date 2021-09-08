@@ -1,54 +1,120 @@
 from tkinter import *
 from tkinter import filedialog
 
-window = Tk()
-window.title("Welcome to Songs Database")
-window.geometry('1000x1000')
 
-def submit_values():
-    author_info = author_value.get()
-    title_info = title_value.get()
-    album_info = album_value.get()
-    copyright_info = copyright_value.get()
-    song_lyrics = song_text_preview.get("1.0", END)
-    print('Submitted: Author: {}, title: {}, album: {}, copyright: {}, song lyrics: {}'.format(author_info, title_info, album_info,
-                                                                              copyright_info, song_lyrics))
+class App(Tk):
+    def __init__(self, *args, **kwargs):
+        Tk.__init__(self, *args, **kwargs)
+        # Setup Frame
+        container = Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+        # container.columnconfigure(0, weight=1)
+        # container.rowconfigure(0, weight=1)
+
+        self.frames = {}
+
+        for F in (HomePage, PageOne, PageTwo, UploadSongPage):
+            frame = F(container, self)
+            self.frames[F] = frame
+            frame.grid(row=0, column=0, sticky='nsew')
+
+        self.show_frame(HomePage)
+
+    def show_frame(self, context):
+        frame = self.frames[context]
+        frame.tkraise()
 
 
-def open_file():
-    text_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a text file with song lyrics",
-                                       filetypes=[("txt files", "*.txt")])
-    filename_text = Text(window, height=4, width=50)
-    filename_text.grid(row=4, column=1)
-    filename_text.insert(END, text_file.name)
+class HomePage(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
 
-    song_text = text_file.read()
-    song_text_preview.insert(END, song_text)
-    print("Song submitted 🤩")
+        # page_one = Button(self, text="Page One", command=lambda: controller.show_frame(PageOne)).grid(row=1, column=1)
+        #
+        # page_two = Button(self, text="Page Two", command=lambda: controller.show_frame(PageTwo)).grid(row=1, column=1)
+
+        page_upload = Button(self, text="Upload Song", command=lambda: controller.show_frame(UploadSongPage)).grid(
+            row=1, column=1)
+
+class UploadSongPage(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        def submit_values():
+            author_info = author_value.get()
+            title_info = title_value.get()
+            album_info = album_value.get()
+            copyright_info = copyright_value.get()
+            song_lyrics = song_text_preview.get("1.0", END)
+            print('Submitted: Author: {}, title: {}, album: {}, copyright: {}, song lyrics: {}'.format(author_info,
+                                                                                                       title_info,
+                                                                                                       album_info,
+                                                                                                       copyright_info,
+                                                                                                       song_lyrics))
+
+        def open_file():
+            text_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a text file with song lyrics",
+                                               filetypes=[("txt files", "*.txt")])
+            filename_text = Text(self, height=4, width=50)
+            filename_text.grid(row=4, column=1)
+            filename_text.insert(END, text_file.name)
+
+            song_text = text_file.read()
+            song_text_preview.insert(END, song_text)
+            print("Song submitted 🤩")
+
+        # TODO: add date field
+        author_label = Label(self, text="Author").grid(row=1, column=1)
+        title_label = Label(self, text="Song title").grid(row=2, column=1)
+        album_label = Label(self, text="Album").grid(row=3, column=1)
+        copyright_label = Label(self, text="Copyright").grid(row=4, column=1)
+        filename_label = Label(self, text="Text File:").grid(row=5, column=1)
+
+        song_text_preview = Text(self, height=15, width=70)
+        song_text_preview.grid(row=7, column=2)
+
+        author_value = StringVar()
+        title_value = StringVar()
+        album_value = StringVar()
+        copyright_value = StringVar()
+        song_value = StringVar()
+
+        author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
+        title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
+        album_field = Entry(self, textvariable=album_value).grid(row=3, column=2)
+        copyright_field = Entry(self, textvariable=copyright_value).grid(row=4, column=2)
+
+        open_file_button = Button(self, text="Browse file...", command=open_file).grid(row=5, column=3)
+        save_button = Button(self, text="Save song", command=submit_values).grid(row=11, column=2)
+        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(
+            row=0, column=0)
 
 
-# TODO: add date field
-author_label = Label(window, text="Author").grid(row=0, column=0)
-title_label = Label(window, text="Song title").grid(row=1, column=0)
-album_label = Label(window, text="Album").grid(row=2, column=0)
-copyright_label = Label(window, text="Copyright").grid(row=3, column=0)
-filename_label = Label(window, text="Text File:").grid(row=4, column=0)
+class PageOne(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
 
-song_text_preview = Text(window, height=15, width=70)
-song_text_preview.grid(row=6, column=1)
+        # label = Label(self, text="Page One")
+        # label.pack(padx=10, pady=10)
+        #
+        # home_button = Button(self, text="Home Page", command=lambda: controller.show_frame(HomePage))
+        # home_button.pack()
 
-author_value = StringVar()
-title_value = StringVar()
-album_value = StringVar()
-copyright_value = StringVar()
-song_value = StringVar()
 
-author_field = Entry(window, textvariable=author_value).grid(row=0, column=1)
-title_field = Entry(window, textvariable=title_value).grid(row=1, column=1)
-album_field = Entry(window, textvariable=album_value).grid(row=2, column=1)
-copyright_field = Entry(window, textvariable=copyright_value).grid(row=3, column=1)
+class PageTwo(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
 
-open_file_button = Button(window, text="Browse file...", command=open_file).grid(row=4, column=2)
-save_button = Button(window, text="Save song", command=submit_values).grid(row=10, column=1)
+        # label = Label(self, text="Page Two")
+        # label.pack(padx=10, pady=10)
+        #
+        # home_button = Button(self, text="Home Page", command=lambda: controller.show_frame(HomePage))
+        # home_button.pack()
 
-window.mainloop()
+
+app = App()
+app.title("Welcome to Songs Database")
+app.geometry('1000x700')
+app.mainloop()
