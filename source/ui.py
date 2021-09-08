@@ -5,14 +5,14 @@ window = Tk()
 window.title("Welcome to Songs Database")
 window.geometry('1000x1000')
 
-
 def submit_values():
     author_info = author_value.get()
     title_info = title_value.get()
     album_info = album_value.get()
     copyright_info = copyright_value.get()
-    print('Submitted: Author: {}, title: {}, album: {}, copyright: {}'.format(author_info, title_info, album_info,
-                                                                              copyright_info))
+    song_lyrics = song_text_preview.get("1.0", END)
+    print('Submitted: Author: {}, title: {}, album: {}, copyright: {}, song lyrics: {}'.format(author_info, title_info, album_info,
+                                                                              copyright_info, song_lyrics))
 
 
 def open_file():
@@ -23,8 +23,8 @@ def open_file():
     filename_text.insert(END, text_file.name)
 
     song_text = text_file.read()
-    song_text_scrollable.insert(END, song_text)
-    print("Song submitted: \n", song_text)
+    song_text_preview.insert(END, song_text)
+    print("Song submitted 🤩")
 
 
 # TODO: add date field
@@ -34,13 +34,14 @@ album_label = Label(window, text="Album").grid(row=2, column=0)
 copyright_label = Label(window, text="Copyright").grid(row=3, column=0)
 filename_label = Label(window, text="Text File:").grid(row=4, column=0)
 
-song_text_scrollable = Text(window, height=15, width=70)
-song_text_scrollable.grid(row=6, column=1)
+song_text_preview = Text(window, height=15, width=70)
+song_text_preview.grid(row=6, column=1)
 
 author_value = StringVar()
 title_value = StringVar()
 album_value = StringVar()
 copyright_value = StringVar()
+song_value = StringVar()
 
 author_field = Entry(window, textvariable=author_value).grid(row=0, column=1)
 title_field = Entry(window, textvariable=title_value).grid(row=1, column=1)
