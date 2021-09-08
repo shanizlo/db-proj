@@ -14,7 +14,7 @@ def parse(path):  # returns a list of lists of the form [theWord, length, verse_
             sentence = sentence.strip()  # to remove newline characters at the end of each sentence
             for c in sentence:
                 if not (48 <= ord(c) & ord(c) <= 57) | (97 <= ord(c) & ord(c) <= 122) | (ord(c) == 39) | (
-                        c == ' '):  # not 0-9, a-z, ', space. there is probably an easier way to do this
+                        c == ' '):  # not 0-9, a-z, ', space
                     sentence = sentence.replace(c, '')
             the_split = sentence.split(" ")
             for i in range(len(the_split)):
