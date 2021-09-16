@@ -55,6 +55,7 @@ def insert_word(word: Word):
 
 
 def get_id_from_word(word_str: str):
+    word_str = word_str.lower()
     with connection:
         cursor.execute("SELECT word_id FROM words WHERE word_value = (:word_str)",
                        {'word_str': word_str})
@@ -74,10 +75,15 @@ def insert_contains(word_id, song_id, verse_num, sentence_num, word_position):
 
 
 def create_group(group_name):
-    with connection:
-        cursor.execute("INSERT INTO groups VALUES (:group_id, :group_name) returning group_id;",
-                       {'group_id': None, 'group_name': group_name.group_name})
-        return cursor.fetchone()[0]
+    try:
+        with connection:
+            cursor.execute("INSERT INTO groups VALUES (:group_id, :group_name) returning group_id;",
+                           {'group_id': None, 'group_name': group_name.group_name})
+            # In case group with this name already exists
+            return cursor.fetchone()[0]
+
+    except sqlite3.Error as err:
+        return err
 
 # TODO: add words to group - find group by id and add words
 #
