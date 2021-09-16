@@ -79,7 +79,7 @@ class DataBaseFunctionsTests(unittest.TestCase):
 
     def test_insert_word(self):
         #  Prepare
-        word1 = Word("hello")
+        word1 = Word("ello")
 
         # Execute
         result = insert_word(word1)
