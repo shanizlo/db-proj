@@ -18,5 +18,6 @@ def parse(lyrics):  # returns a list of lists of the form [theWord, verse_num, s
                     sentence = sentence.replace(c, '')
             the_split = sentence.split(" ")
             for i in range(len(the_split)):
-                the_words.append([the_split[i], which_verse, which_sentence, i + 1])
+                if the_split[i] != '':
+                    the_words.append([the_split[i], which_verse, which_sentence, i + 1])
     return the_words
