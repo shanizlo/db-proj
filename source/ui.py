@@ -35,7 +35,7 @@ class HomePage(Frame):
         find_word = Button(self, text="Find Word 🔍", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
         word_context = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
 
-
+# TODO: add printing error message
 class UploadSongPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
