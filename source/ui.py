@@ -29,10 +29,10 @@ class HomePage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        page_upload = Button(self, text="Upload Song 🎙", command=lambda: controller.show_frame(UploadSongPage)).grid(row=1, column=1)
-        page_show_words = Button(self, text="Show Words in Song 🔤", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=2)
-        page_upload = Button(self, text="Statistics 📊", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=3)
-        find_word = Button(self, text="Find Word 🔍", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
+        page_upload = Button(self, text="Upload Song", command=lambda: controller.show_frame(UploadSongPage)).grid(row=1, column=1)
+        page_show_words = Button(self, text="Show Words in Song", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=2)
+        page_upload = Button(self, text="Statistics", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=3)
+        find_word = Button(self, text="Find Word", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
         word_context = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
 
 # TODO: add printing error message
@@ -62,10 +62,10 @@ class UploadSongPage(Frame):
 
             song_text = text_file.read()
             song_text_preview.insert(END, song_text)
-            print("Song submitted 🤩")
+            print("Song submitted")
 
         # TODO: add date field
-        page_title_label = Label(self, text="Upload Song 🎙").grid(row=0, column=2)
+        page_title_label = Label(self, text="Upload Song").grid(row=0, column=2)
 
         author_label = Label(self, text="Author").grid(row=1, column=1)
         title_label = Label(self, text="Song title").grid(row=2, column=1)
@@ -89,15 +89,15 @@ class UploadSongPage(Frame):
 
         open_file_button = Button(self, text="Browse file...", command=open_file).grid(row=5, column=3)
         save_button = Button(self, text="Save song", command=submit_values).grid(row=11, column=2)
-        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+        home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
 
 class StatisticsPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        page_title_label = Label(self, text="Statistics 📊").grid(row=0, column=2)
-        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+        page_title_label = Label(self, text="Statistics").grid(row=0, column=2)
+        home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 #         TODO: add statistics fields
 
 
@@ -159,8 +159,8 @@ class ShowWordsInSongPage(Frame):
                 jQuery Tutorial"""
             song_words_preview.insert(END, song_words)
 
-        page_title_label = Label(self, text="Show Words in Song 🔤").grid(row=0, column=2)
-        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+        page_title_label = Label(self, text="Show Words in Song").grid(row=0, column=2)
+        home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
         author_value = StringVar()
         title_value = StringVar()
@@ -170,7 +170,7 @@ class ShowWordsInSongPage(Frame):
         author_label = Label(self, text="Author").grid(row=1, column=1)
         title_label = Label(self, text="Song title").grid(row=2, column=1)
 
-        search_button = Button(self, text="Search song 🔍", command=search_song_words_desc).grid(row=11, column=2)
+        search_button = Button(self, text="Search song", command=search_song_words_desc).grid(row=11, column=2)
 
         song_words_preview = Text(self, height=15, width=70)
         song_words_preview.grid(row=7, column=2)
@@ -191,8 +191,8 @@ class ShowWordByPlace(Frame):
             found_word = "Hello"
             found_word_preview.insert(END, found_word)
 
-        page_title_label = Label(self, text="Find Word by its Position 🔍").grid(row=0, column=2)
-        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0,
+        page_title_label = Label(self, text="Find Word by its Position").grid(row=0, column=2)
+        home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0,
                                                                                                          column=0)
         author_value = StringVar()
         title_value = StringVar()
@@ -215,7 +215,7 @@ class ShowWordByPlace(Frame):
 
         word_label = Label(self, text="Word found:").grid(row=12, column=1)
 
-        search_button = Button(self, text="Search song 🔍", command=search_word).grid(row=11, column=2)
+        search_button = Button(self, text="Search song", command=search_word).grid(row=11, column=2)
 
         found_word_preview = Text(self, height=1, width=10)
         found_word_preview.grid(row=12, column=2)
@@ -258,15 +258,15 @@ class ShowContext(Frame):
             song_words_preview.insert(END, song_words)
 
         def search_word_context():
-            #  TODO - add search for appearences of the word
+            #TODO - add search for appearences of the word
             return True
 
         def set_chosen_word(choice):
             choice = options_words.get()
             print(choice)
 
-        page_title_label = Label(self, text="Show Context of Word. Search for song, then choose the word to show context for. 🔤").grid(row=0, column=2)
-        home_button = Button(self, text="Home 🏠", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+        page_title_label = Label(self, text="Show Context of Word. Search for song, then choose the word to show context for.").grid(row=0, column=2)
+        home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
         author_value = StringVar()
         title_value = StringVar()
@@ -276,7 +276,7 @@ class ShowContext(Frame):
         author_label = Label(self, text="Author").grid(row=1, column=1)
         title_label = Label(self, text="Song title").grid(row=2, column=1)
 
-        search_button = Button(self, text="Search song 🔍", command=search_song_words_desc).grid(row=4, column=2)
+        search_button = Button(self, text="Search song", command=search_song_words_desc).grid(row=4, column=2)
 
         song_words_preview = Text(self, height=15, width=70)
         song_words_preview.grid(row=11, column=2)
@@ -291,11 +291,7 @@ class ShowContext(Frame):
 
         search_word_contexts = Button(self, text="Search word context", command=search_word_context()).grid(row=6, column=2)
 
-
-
-
-
 app = App()
-app.title("Welcome to Songs Database 🎙")
+app.title("Welcome to Songs Database")
 app.geometry('1000x700')
 app.mainloop()
