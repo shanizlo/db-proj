@@ -13,7 +13,8 @@ class App(Tk):
 
         self.frames = {}
 
-        for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext):
+        #  Important when adding a frame
+        for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext, GroupPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -29,11 +30,12 @@ class HomePage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        page_upload = Button(self, text="Upload Song", command=lambda: controller.show_frame(UploadSongPage)).grid(row=1, column=1)
-        page_show_words = Button(self, text="Show Words in Song", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=2)
-        page_upload = Button(self, text="Statistics", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=3)
-        find_word = Button(self, text="Find Word", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
-        word_context = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
+        page_upload_btn = Button(self, text="Upload Song", command=lambda: controller.show_frame(UploadSongPage)).grid(row=1, column=1)
+        page_show_words_btn = Button(self, text="Show Words in Song", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=2)
+        page_upload_btn = Button(self, text="Statistics", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=3)
+        find_word_btn = Button(self, text="Find Word", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
+        word_context_btn = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
+        add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=2)
 
 # TODO: add printing error message
 class UploadSongPage(Frame):
@@ -64,7 +66,6 @@ class UploadSongPage(Frame):
             song_text_preview.insert(END, song_text)
             print("Song submitted")
 
-        # TODO: add date field
         page_title_label = Label(self, text="Upload Song").grid(row=0, column=2)
 
         author_label = Label(self, text="Author").grid(row=1, column=1)
@@ -99,6 +100,7 @@ class StatisticsPage(Frame):
         page_title_label = Label(self, text="Statistics").grid(row=0, column=2)
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 #         TODO: add statistics fields
+
 
 
 class ShowWordsInSongPage(Frame):
@@ -156,7 +158,8 @@ class ShowWordsInSongPage(Frame):
                 PHP Tutorial
                 Java Tutorial
                 C++ Tutorial
-                jQuery Tutorial"""
+                jQuery Tutorial
+                """
             song_words_preview.insert(END, song_words)
 
         page_title_label = Label(self, text="Show Words in Song").grid(row=0, column=2)
@@ -290,6 +293,25 @@ class ShowContext(Frame):
         words_menu.grid(row=5, column=2)
 
         search_word_contexts = Button(self, text="Search word context", command=search_word_context()).grid(row=6, column=2)
+
+class GroupPage(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        author_value = StringVar()
+        title_value = StringVar()
+
+        home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+        page_title_label = Label(self, text="Choose words out of a chosen song/s. Enter the group name you wish to add to/create.").grid(row=0, column=2)
+
+        author_label = Label(self, text="Author").grid(row=1, column=1)
+        title_label = Label(self, text="Song title").grid(row=2, column=1)
+        author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
+        title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
+
+
+
+
 
 app = App()
 app.title("Welcome to Songs Database")
