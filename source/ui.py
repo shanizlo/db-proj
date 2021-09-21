@@ -298,16 +298,52 @@ class GroupPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
+        def add_words_to_group():
+            to_add = list(song_words.curselection())
+            added = list(d_chosen_words.get(0, END))
+            for index in to_add:
+                if song_words.get(index) not in added:
+                    d_chosen_words.insert(END, song_words.get(index))
+                    added.insert(len(added), song_words.get(index))
+
+        def remove_words_chosen():
+            selected = d_chosen_words.curselection()
+            no_words_deleted = 0
+            for index in selected:
+                d_chosen_words.delete(index-no_words_deleted)
+                no_words_deleted += 1
+
         author_value = StringVar()
         title_value = StringVar()
 
         home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
         page_title_label = Label(self, text="Choose words out of a chosen song/s. Enter the group name you wish to add to/create.").grid(row=0, column=2)
 
-        author_label = Label(self, text="Author").grid(row=1, column=1)
-        title_label = Label(self, text="Song title").grid(row=2, column=1)
+        author_label = Label(self, text="Author:").grid(row=1, column=1)
+        title_label = Label(self, text="Song title:").grid(row=2, column=1)
         author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
         title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
+
+        song_word_label = Label(self, text="Words of song:").grid(row=3, column=1)
+        song_words = Listbox(self)
+        song_words.grid(row=4, column=1)
+        #############TEST###############
+        song_words.insert(END, "discord")
+        song_words.insert(END, "presides")
+        song_words.insert(END, "in")
+        song_words.insert(END, "society")
+        #####################################
+        add_btn = Button(self, text="Add chosen words", command=add_words_to_group).grid(row=5, column=1)
+
+
+        d_chosen_words_label= Label(self, text="Words chosen thus far").grid(row=3, column=2)
+        d_chosen_words = Listbox(self)
+        d_chosen_words.grid(row=4, column=2)
+        d_remove_btn = Button(self, text="Remove chosen words", command=remove_words_chosen).grid(row=5, column=2)
+
+        #TODO add group name field and "add group to database"
+
+
 
 
 
