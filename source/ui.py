@@ -99,7 +99,35 @@ class StatisticsPage(Frame):
 
         page_title_label = Label(self, text="Statistics").grid(row=0, column=2)
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
-#         TODO: add statistics fields
+
+        author_value = StringVar()
+        title_value = StringVar()
+        num_words_in_song_value = IntVar()
+        avg_chars_in_sentence_value = DoubleVar()
+        avg_chars_in_verse_value = DoubleVar()
+
+        author_label = Label(self, text="Author:").grid(row=1, column=1)
+        title_label = Label(self, text="Song title:").grid(row=2, column=1)
+        author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
+        title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
+
+        num_words_in_song_label = Label(self, text="Number of words in song:").grid(row=4, column=1)
+        avg_chars_in_sentence_label = Label(self, text="Average characters in sentence:").grid(row=4, column=2)
+        avg_chars_in_verse_label = Label(self, text="Average characters in verse:").grid(row=4, column=3)
+
+        num_words_in_song = Label(self, textvariable=num_words_in_song_value).grid(row=5, column=1)
+        avg_chars_in_sentence = Label(self, textvariable=avg_chars_in_sentence_value).grid(row=5, column=2)
+        avg_chars_in_verse = Label(self, textvariable=avg_chars_in_verse_value).grid(row=5, column=3)
+
+        def show_statistics():
+            #TODO get statistics from author and title which yields song_id
+            #TEST VALUES
+            num_words_in_song_value.set(7)
+            avg_chars_in_sentence_value.set(3.7)
+            avg_chars_in_verse_value.set(4.2)
+
+
+        statistics_button = Button(self, text="Show statistics", command=show_statistics).grid(row=3, column=1)
 
 
 
