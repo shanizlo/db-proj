@@ -336,7 +336,7 @@ class GroupPage(Frame):
         add_btn = Button(self, text="Add chosen words", command=add_words_to_group).grid(row=5, column=1)
 
 
-        d_chosen_words_label= Label(self, text="Words chosen thus far").grid(row=3, column=2)
+        d_chosen_words_label= Label(self, text="Words chosen thus far:").grid(row=3, column=2)
         d_chosen_words = Listbox(self)
         d_chosen_words.grid(row=4, column=2)
         d_remove_btn = Button(self, text="Remove chosen words", command=remove_words_chosen).grid(row=5, column=2)
