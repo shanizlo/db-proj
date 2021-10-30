@@ -85,11 +85,39 @@ def create_group(group_name):
     except sqlite3.Error as err:
         return err
 
+def search_song_id(author: str, title: str):
+    with connection:
+        cursor.execute("SELECT song_id FROM songs WHERE songs.title = :song_title AND songs.author = :song_author;",
+                       {'song_title': title, 'song_author': author})
+        found_song_id = cursor.fetchone()
+        if found_song_id is not None:
+            return found_song_id[0]
+        else:
+            return None
+
+def search_words_ids_song_cantains(song_id: str):
+    with connection:
+        cursor.execute("SELECT * FROM contains WHERE song_id = :song_id;",
+                       {'song_id': song_id})
+        found_words_ids = cursor.fetchall()
+        return found_words_ids
+
+def search_word_by_id(word_id: str):
+    with connection:
+        cursor.execute("SELECT word_value FROM words WHERE words.word_id = :word_id;",
+                       {'word_id': word_id})
+        word_found = cursor.fetchone()
+        if word_found is not None:
+            return word_found[0]
+        else:
+            return None
+
 # TODO: add words to group - find group by id and add words
-#
 #  TODO: add create phrase
 
 # TODO: add words to phrase
+
+
 
 connection.commit()
 # connection.close()

@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
-from source.database import *
+from source.helpers_db import *
 
 class App(Tk):
     def __init__(self, *args, **kwargs):
@@ -129,65 +129,16 @@ class StatisticsPage(Frame):
 
         statistics_button = Button(self, text="Show statistics", command=show_statistics).grid(row=3, column=1)
 
-
-
 class ShowWordsInSongPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
         def search_song_words_desc():
+            song_words_preview.delete("1.0", "end")
             author = author_value.get()
             title = title_value.get()
-            # TODO: function should return words of the song in desc order, add necessary query in database.py as needed
             print("searching for song words for author {}, title {}".format(author, title))
-            #  TODO: add real output from show words
-            song_words = """HTML Tutorial
-                CSS Tutorial
-                HTML Tutorial
-                CSS Tutorial
-                JavaScript Tutorial
-                How To Tutorial
-                SQL Tutorial
-                Python Tutorial
-                W3.CSS Tutorial
-                Bootstrap Tutorial
-                PHP Tutorial
-                Java Tutorial
-                C++ Tutorial
-                jQuery TutorialHTML Tutorial
-                CSS Tutorial
-                JavaScript Tutorial
-                How To Tutorial
-                SQL Tutorial
-                Python Tutorial
-                W3.CSS Tutorial
-                Bootstrap Tutorial
-                PHP Tutorial
-                Java Tutorial
-                C++ Tutorial
-                jQuery TutorialHTML Tutorial
-                CSS Tutorial
-                JavaScript Tutorial
-                How To Tutorial
-                SQL Tutorial
-                Python Tutorial
-                W3.CSS Tutorial
-                Bootstrap Tutorial
-                PHP Tutorial
-                Java Tutorial
-                C++ Tutorial
-                jQuery Tutorial
-                JavaScript Tutorial
-                How To Tutorial
-                SQL Tutorial
-                Python Tutorial
-                W3.CSS Tutorial
-                Bootstrap Tutorial
-                PHP Tutorial
-                Java Tutorial
-                C++ Tutorial
-                jQuery Tutorial
-                """
+            song_words = SearchSongWords(author, title)
             song_words_preview.insert(END, song_words)
 
         page_title_label = Label(self, text="Show Words in Song").grid(row=0, column=2)
