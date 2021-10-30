@@ -95,13 +95,15 @@ def search_song_id(author: str, title: str):
         else:
             return None
 
-def search_words_ids_song_cantains(song_id: str):
+# TODO: add tests
+def search_words_ids_song_contains(song_id: str):
     with connection:
         cursor.execute("SELECT * FROM contains WHERE song_id = :song_id;",
                        {'song_id': song_id})
         found_words_ids = cursor.fetchall()
         return found_words_ids
 
+# TODO: add tests
 def search_word_by_id(word_id: str):
     with connection:
         cursor.execute("SELECT word_value FROM words WHERE words.word_id = :word_id;",
@@ -111,6 +113,12 @@ def search_word_by_id(word_id: str):
             return word_found[0]
         else:
             return None
+
+# TODO: add tests
+def getAllSongEntries():
+    with connection:
+        cursor.execute("SELECT * FROM songs;")
+        return cursor.fetchall()
 
 # TODO: add words to group - find group by id and add words
 #  TODO: add create phrase

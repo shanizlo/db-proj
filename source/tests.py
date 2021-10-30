@@ -153,4 +153,22 @@ class DataBaseFunctionsTests(unittest.TestCase):
         expected_result = (result, 'chuck')
         self.assertEqual(result3, expected_result)
 
+    # TODO: fix this test
+    def test_search_song_id(self):
+        # Prepare
+        copyright_test = "copyright There are plenty of tutorials on the 877834 2948923"
+        album_test = "Some Album 13"
+        author_test = "Shani Zlotnik"
+        title_test = "Other Title Chuck"
+        song1 = Song(author_test, title_test, album_test, copyright_test)
 
+        # Execute
+        song_id = insert_song(song1)
+        all_songs = getAllSongEntries()
+
+        # Execute
+        result = search_song_id(author_test, title_test)
+
+        # Assert
+        self.assertEqual(result, song_id)
+        self.assertNotEqual(result, None)
