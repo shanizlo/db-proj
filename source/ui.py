@@ -58,8 +58,8 @@ class UploadSongPage(Frame):
         def open_file():
             text_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a text file with song lyrics",
                                                filetypes=[("txt files", "*.txt")])
-            filename_text = Text(self, height=4, width=50)
-            filename_text.grid(row=4, column=1)
+            filename_text = Text(self, height=3, width=70)
+            filename_text.grid(row=5, column=2)
             filename_text.insert(END, text_file.name)
 
             song_text = text_file.read()
@@ -88,7 +88,7 @@ class UploadSongPage(Frame):
         album_field = Entry(self, textvariable=album_value).grid(row=3, column=2)
         copyright_field = Entry(self, textvariable=copyright_value).grid(row=4, column=2)
 
-        open_file_button = Button(self, text="Browse file...", command=open_file).grid(row=5, column=3)
+        open_file_button = Button(self, text="Browse file...", command=open_file).grid(row=6, column=2)
         save_button = Button(self, text="Save song", command=submit_values).grid(row=11, column=2)
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
