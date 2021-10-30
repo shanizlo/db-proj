@@ -86,8 +86,8 @@ class DataBaseFunctionsTests(unittest.TestCase):
         result2 = insert_word(word1)
         # This test will fail when running separately because word_id would be 1
         # In this case uncomment next line
-        # expected_word_entry = (1, 'hello', 5)
-        expected_word_entry = (302, 'hello', 5)
+        expected_word_entry = (1, 'hello', 5)
+        # expected_word_entry = (302, 'hello', 5)
 
         # Assert
         # Check that add to database returned word_id which is not None
