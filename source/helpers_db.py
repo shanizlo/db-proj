@@ -1,5 +1,7 @@
 from source.database import *
+from source.helpers_validators import *
 
+# Finds song by author and title and shows it words in alphabetic order
 def SearchSongWords(author: str, title: str):
     if author == "" or title == "":
         return "Please enter author and title."
@@ -15,3 +17,18 @@ def SearchSongWords(author: str, title: str):
     if len(song_words_as_text) == 0:
         song_words_as_text = "Song with this title and author not found."
     return song_words_as_text
+
+def SearchWordByPositionInSong(author, title, verseNum, lineNum, wordNum):
+    validation_error = validate_values_find_word(author, title, verseNum, lineNum, wordNum)
+    if validation_error is not None:
+        return validation_error
+    if author == "" or title == "":
+        return "Please enter author and title."
+    song_id = search_song_id(author, title)
+    if song_id == None:
+        return "Song with this title and author not found."
+    word_id = search_word_id_by_position(song_id, verseNum, lineNum, wordNum)
+    if word_id == None:
+        return "Word with this position not found."
+    return search_word_by_id(word_id)
+

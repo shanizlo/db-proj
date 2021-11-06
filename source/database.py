@@ -104,6 +104,7 @@ def search_words_ids_song_contains(song_id: str):
         return found_words_ids
 
 # TODO: add tests
+# Finds word value
 def search_word_by_id(word_id: str):
     with connection:
         cursor.execute("SELECT word_value FROM words WHERE words.word_id = :word_id;",
@@ -113,11 +114,34 @@ def search_word_by_id(word_id: str):
             return word_found[0]
         else:
             return None
+# TODO: add tests
+def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wordPos: int):
+    with connection:
+        cursor.execute("SELECT word_id FROM contains WHERE song_id = :song_id AND verse_num = :verse_num AND sentence_num = :sentence_num AND word_position = :word_pos;",
+                       {'song_id': songId, 'verse_num': verseNum, 'sentence_num': sentenceNum, 'word_pos': wordPos})
+        word_id_found = cursor.fetchone()
+        if word_id_found is not None:
+            return word_id_found[0]
+        else:
+            return None
 
 # TODO: add tests
+# Function for debugging, nor for functionality
 def getAllSongEntries():
     with connection:
         cursor.execute("SELECT * FROM songs;")
+        return cursor.fetchall()
+
+# Function for debugging, nor for functionality
+def getAllWordPositionsInSongId():
+    with connection:
+        cursor.execute("SELECT * FROM contains WHERE song_id = 1;")
+        return cursor.fetchall()
+
+# Function for debugging, nor for functionality
+def getfVersesNumsInSong():
+    with connection:
+        cursor.execute("SELECT verse_num FROM contains WHERE song_id = 1 ORDER BY verse_num DESC;")
         return cursor.fetchall()
 
 # TODO: add words to group - find group by id and add words
