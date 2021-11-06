@@ -200,7 +200,7 @@ class ShowWordByPlace(Frame):
 
         word_label = Label(self, text="Word found:").grid(row=12, column=1)
 
-        search_button = Button(self, text="Search song", command=search_word).grid(row=11, column=2)
+        search_button = Button(self, text="Search word", command=search_word).grid(row=11, column=2)
 
         found_word_preview = Text(self, height=1, width=70)
         found_word_preview.grid(row=12, column=2)
@@ -209,38 +209,23 @@ class ShowContext(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
+        list_found_words = []
+
         def search_song_words_desc():
+            # TODO - add errors handling (in case song not found, etc)
+            context_preview.delete("1.0", "end")
             author = author_value.get()
             title = title_value.get()
-            # TODO: function should return words of the song in desc order, add necessary query in database.py as needed
-            print("searching for song words for author {}, title {}".format(author, title))
-            #  TODO: add real output from show words
-            song_words = """HTML Tutorial
-                CSS Tutorial
-                HTML Tutorial
-                CSS Tutorial
-                JavaScript Tutorial
-                How To Tutorial
-                SQL Tutorial
-                Python Tutorial
-                W3.CSS Tutorial
-                Bootstrap Tutorial
-                PHP Tutorial
-                Java Tutorial
-                C++ Tutorial
-                jQuery TutorialHTML Tutorial
-                CSS Tutorial
-                JavaScript Tutorial
-                How To Tutorial
-                SQL Tutorial
-                Python Tutorial
-                W3.CSS Tutorial
-                Bootstrap Tutorial
-                PHP Tutorial
-                Java Tutorial
-                C++ Tutorial
-                jQuery Tutorial"""
-            song_words_preview.insert(END, song_words)
+            if author == "" or title == "":
+                context_preview.insert(INSERT, "Please enter author and title.")
+            found_words = SearchSongWordsOrReturnNone(author, title)
+            if found_words == None:
+                context_preview.insert(INSERT, "Song with this author and title not found.")
+            else:
+                context_preview.insert(INSERT, """Choose word from the dropdown and then click "Search word context" button.""")
+                list_found_words = found_words
+                words_menu = OptionMenu(self, options_words, *list_found_words, command=set_chosen_word)
+                words_menu.grid(row=5, column=2)
 
         def search_word_context():
             #TODO - add search for appearences of the word
@@ -263,16 +248,17 @@ class ShowContext(Frame):
 
         search_button = Button(self, text="Search song", command=search_song_words_desc).grid(row=4, column=2)
 
-        song_words_preview = Text(self, height=15, width=70)
-        song_words_preview.grid(row=11, column=2)
+        context_preview = Text(self, height=15, width=70)
+        context_preview.grid(row=11, column=2)
 
         options_words = StringVar()
         options_words.set("Choose word")
 
         # TODO: use output of find song words then  list = output.split()
-        list = ['HTML', 'Tutorial', 'CSS', 'Tutorial', 'JavaScript', 'Tutorial', 'How', 'To', 'Tutorial', 'SQL', 'Tutorial', 'Python', 'Tutorial', 'W3.CSS', 'Tutorial', 'Bootstrap', 'Tutorial', 'PHP', 'Tutorial', 'Java', 'Tutorial', 'C++', 'Tutorial', 'jQuery', 'Tutorial']
-        words_menu = OptionMenu(self, options_words, *list, command=set_chosen_word)
-        words_menu.grid(row=5, column=2)
+        # list = ['Tutorial', 'CSS', 'Tutorial', 'JavaScript', 'Tutorial', 'How', 'To', 'Tutorial', 'SQL', 'Tutorial', 'Python', 'Tutorial', 'W3.CSS', 'Tutorial', 'Bootstrap', 'Tutorial', 'PHP', 'Tutorial', 'Java', 'Tutorial', 'C++', 'Tutorial', 'jQuery', 'Tutorial']
+        list = [""]
+        # words_menu = OptionMenu(self, options_words, *list, command=set_chosen_word)
+        # words_menu.grid(row=5, column=2)
 
         search_word_contexts = Button(self, text="Search word context", command=search_word_context()).grid(row=6, column=2)
 
