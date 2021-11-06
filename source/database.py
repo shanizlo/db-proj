@@ -87,7 +87,7 @@ def create_group(group_name):
 
 def search_song_id(author: str, title: str):
     with connection:
-        cursor.execute("SELECT song_id FROM songs WHERE songs.title = :song_title AND songs.author = :song_author;",
+        cursor.execute("SELECT song_id FROM songs WHERE title = :song_title AND author = :song_author;",
                        {'song_title': title, 'song_author': author})
         found_song_id = cursor.fetchone()
         if found_song_id is not None:
@@ -95,7 +95,6 @@ def search_song_id(author: str, title: str):
         else:
             return None
 
-# TODO: add tests
 def search_words_ids_song_contains(song_id: str):
     with connection:
         cursor.execute("SELECT * FROM contains WHERE song_id = :song_id;",
@@ -103,7 +102,6 @@ def search_words_ids_song_contains(song_id: str):
         found_words_ids = cursor.fetchall()
         return found_words_ids
 
-# TODO: add tests
 # Finds word value
 def search_word_by_id(word_id: str):
     with connection:
@@ -114,7 +112,7 @@ def search_word_by_id(word_id: str):
             return word_found[0]
         else:
             return None
-# TODO: add tests
+
 def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wordPos: int):
     with connection:
         cursor.execute("SELECT word_id FROM contains WHERE song_id = :song_id AND verse_num = :verse_num AND sentence_num = :sentence_num AND word_position = :word_pos;",
@@ -125,7 +123,6 @@ def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wor
         else:
             return None
 
-# TODO: add tests
 # Function for debugging, nor for functionality
 def getAllSongEntries():
     with connection:
