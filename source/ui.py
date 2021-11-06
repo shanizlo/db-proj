@@ -60,6 +60,10 @@ class UploadSongPage(Frame):
                                                filetypes=[("txt files", "*.txt")])
             filename_text = Text(self, height=3, width=70)
             filename_text.grid(row=5, column=2)
+
+            filename_text.delete("1.0", "end")
+            song_text_preview.delete("1.0", "end")
+
             filename_text.insert(END, text_file.name)
 
             song_text = text_file.read()
@@ -162,15 +166,14 @@ class ShowWordByPlace(Frame):
         Frame.__init__(self, parent)
 
         def search_word():
+            found_word_preview.delete("1.0", "end")
             author = author_value.get()
             title = title_value.get()
             verse = verse_num.get()
             line = line_value.get()
             word_pos = word_num_value.get()
-            # TODO: function should return word by its position
-            print("searching for word for author {}, title {}, verse {}, line {}, word num {}".format(author, title, verse, line, word_pos))
-            #  TODO: add real output from show words
-            found_word = "Hello"
+            word_found = SearchWordByPositionInSong(author, title, verse, line, word_pos)
+            found_word = word_found
             found_word_preview.insert(END, found_word)
 
         page_title_label = Label(self, text="Find Word by its Position").grid(row=0, column=2)
@@ -199,7 +202,7 @@ class ShowWordByPlace(Frame):
 
         search_button = Button(self, text="Search song", command=search_word).grid(row=11, column=2)
 
-        found_word_preview = Text(self, height=1, width=10)
+        found_word_preview = Text(self, height=1, width=70)
         found_word_preview.grid(row=12, column=2)
 
 class ShowContext(Frame):

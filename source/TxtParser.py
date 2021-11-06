@@ -16,7 +16,7 @@ def parse(lyrics):  # returns a list of lists of the form [theWord, verse_num, s
                 if the_sentences[i+1] == "\n":
                     i = i + 1
             which_verse += 1
-            which_sentence = 1
+            which_sentence = 0
             i = i + 1
         else:
             which_sentence += 1
