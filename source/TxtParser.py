@@ -3,21 +3,33 @@ def parse(lyrics):  # returns a list of lists of the form [theWord, verse_num, s
     which_verse = 1  # counts the verse we are on
     the_words = []  # the list of lists of the form
     the_sentences = lyrics.splitlines(True)
-    for sentence in the_sentences:
-        if sentence == "":  # for good measure
+    i = 0
+    while i < len(the_sentences):
+        if the_sentences[i] == "":  # for good measure
+            i = i + 1
             break
-        elif sentence == "\n":  # means we jumped a verse
+        elif the_sentences[i] == "\n":  # means we jumped a verse
+            if which_sentence == 0: #To handle song that starts with newlines
+                i = i + 1
+                continue
+            if i + 1 < len(the_sentences): # to avoid skipping verse if there twice new line
+                if the_sentences[i+1] == "\n":
+                    i = i + 1
             which_verse += 1
+            which_sentence = 1
+            i = i + 1
         else:
             which_sentence += 1
-            sentence = sentence.lower()  # so we have a uniform standard for the words
-            sentence = sentence.strip()  # to remove newline characters at the end of each sentence
-            for c in sentence:
+            the_sentences[i] = the_sentences[i].lower()  # so we have a uniform standard for the words
+            the_sentences[i] = the_sentences[i].strip()  # to remove newline characters at the end of each sentence
+            for c in the_sentences[i]:
                 if not (48 <= ord(c) & ord(c) <= 57) | (97 <= ord(c) & ord(c) <= 122) | (ord(c) == 39) | (
                         c == ' '):  # not 0-9, a-z, ', space
-                    sentence = sentence.replace(c, '')
-            the_split = sentence.split(" ")
-            for i in range(len(the_split)):
-                if the_split[i] != '':
-                    the_words.append([the_split[i], which_verse, which_sentence, i + 1])
+                    the_sentences[i] = the_sentences[i].replace(c, '')
+            the_split = the_sentences[i].split(" ")
+            for j in range(len(the_split)):
+                if the_split[j] != '':
+                    the_words.append([the_split[j], which_verse, which_sentence, j + 1])
+            i = i + 1
+
     return the_words
