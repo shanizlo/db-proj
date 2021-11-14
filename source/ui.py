@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
-from source.helpers_db import *
+import helpers_db
 
 class App(Tk):
     def __init__(self, *args, **kwargs):

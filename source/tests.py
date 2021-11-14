@@ -1,8 +1,8 @@
 import unittest
 from sqlite3 import IntegrityError
 
-from source.entities import *
-from source.database import *
+from entities import *
+from database import *
 
 #  Name of the test should be test_<name of function which is being tested>
 # Make sure to check all the functionality

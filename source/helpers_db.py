@@ -1,5 +1,5 @@
-from source.database import *
-from source.helpers_validators import *
+from database import *
+from helpers_validators import *
 
 # Finds song by author and title and shows it words in alphabetic order as text
 def SearchSongWords(author: str, title: str):

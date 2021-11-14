@@ -1,7 +1,7 @@
 import sqlite3
 
-from source import TxtParser
-from source.entities import *
+from TxtParser import parse
+from entities import *
 
 connection = sqlite3.connect(":memory:")
 cursor = connection.cursor()
