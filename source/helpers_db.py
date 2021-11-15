@@ -48,5 +48,15 @@ def SearchWordByPositionInSong(author, title, verseNum, lineNum, wordNum):
         return "Word with this position not found."
     return search_word_by_id(word_id)
 
-def GroupUI(name, words):
-    pass
+
+def From_UI_Into_Group(name: str, words):
+    group_id = create_group(name)
+    group_existed = False
+    if not isinstance(group_id, int):  # this means if creating the group failed - meaning the group existed
+        group_id = find_group_id_by_name(name)
+        group_existed = True
+    for w in words:
+        w_id = get_id_from_word(w)
+        if not is_word_in_group(group_id, w_id):
+            add_word_to_group(group_id, w_id)
+    return group_existed

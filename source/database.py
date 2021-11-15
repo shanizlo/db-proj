@@ -73,6 +73,7 @@ def insert_contains(word_id, song_id, verse_num, sentence_num, word_position):
                        {'word_id': word_id, 'song_id': song_id, 'verse_num': verse_num, 'sentence_num': sentence_num,
                         'word_position': word_position})
 
+
 def search_song_id(author: str, title: str):
     with connection:
         cursor.execute("SELECT song_id FROM songs WHERE title = :song_title AND author = :song_author;",
@@ -83,12 +84,14 @@ def search_song_id(author: str, title: str):
         else:
             return None
 
+
 def search_words_ids_song_contains(song_id: str):
     with connection:
         cursor.execute("SELECT * FROM contains WHERE song_id = :song_id;",
                        {'song_id': song_id})
         found_words_ids = cursor.fetchall()
         return found_words_ids
+
 
 # Finds word value
 def search_word_by_id(word_id: str):
@@ -101,6 +104,7 @@ def search_word_by_id(word_id: str):
         else:
             return None
 
+
 def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wordPos: int):
     with connection:
         cursor.execute("SELECT word_id FROM contains WHERE song_id = :song_id AND verse_num = :verse_num AND sentence_num = :sentence_num AND word_position = :word_pos;",
@@ -111,16 +115,19 @@ def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wor
         else:
             return None
 
+
 def create_group(group_name):
     try:
         with connection:
             cursor.execute("INSERT INTO groups VALUES (:group_id, :group_name) returning group_id;",
-                           {'group_id': None, 'group_name': group_name.group_name})
+                           {'group_id': None, 'group_name': group_name})
             # In case group with this name already exists
             return cursor.fetchone()[0]
 
+
     except sqlite3.Error as err:
         return err
+
 
 def is_word_in_group(groupId: int, wordId: int):
     with connection:
@@ -128,9 +135,11 @@ def is_word_in_group(groupId: int, wordId: int):
                        {'groupId': groupId, 'wordId': wordId})
         return cursor.fetchone() is not None
 
+
 def add_word_to_group(groupId: int, wordId: int):
     with connection:
         cursor.execute("INSERT INTO wordsInGroup VALUES (:groupId, :wordId)", {'groupId': groupId, 'wordId': wordId})
+
 
 def find_group_id_by_name(name: str):
     with connection:
@@ -158,7 +167,6 @@ def getfVersesNumsInSong():
     with connection:
         cursor.execute("SELECT verse_num FROM contains WHERE song_id = 1 ORDER BY verse_num DESC;")
         return cursor.fetchall()
-
 
 #  TODO: add create phrase
 

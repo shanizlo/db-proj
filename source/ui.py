@@ -292,10 +292,14 @@ class GroupPage(Frame):
                 song_words.insert(END, w)
 
         def group_ui_into_db():
-            if group_name_str.get() == None or group_name_str.get() == "" or d_chosen_words.curselection() == None:
+            if group_name_str.get() is None or group_name_str.get() == "" or d_chosen_words.size() == 0:
                 input_checker_text.set("Please enter valid group name and choose at least one word.")
             else:
-                pass
+                words = [d_chosen_words.get(i) for i in range(d_chosen_words.size())]
+                if From_UI_Into_Group(group_name_str.get(), words):
+                    input_checker_text.set("Inserted the words successfully into the existing group.")
+                else:
+                    input_checker_text.set("Created a new group with these given words.")
 
         # author and title strings #
         author_value = StringVar()
@@ -311,27 +315,27 @@ class GroupPage(Frame):
         author_field = Entry(self, textvariable=author_value).grid(row=1, column=1)
         title_field = Entry(self, textvariable=title_value).grid(row=2, column=1)
 
-        # all that has to do with the words of song that is inputted from the user
+        # all that has to do with the words of song that is inputted from the user #
         find_song_words_btn = Button(self, text="Find song words", command=get_words_from_input).grid(row=3, column=1)
         song_word_label = Label(self, text="Words of song:").grid(row=4, column=0)
-        song_words = Listbox(self)
+        song_words = Listbox(self, selectmode="multiple")
         song_words.grid(row=5, column=0)
 
         add_btn = Button(self, text="Add chosen words", command=add_words_to_group).grid(row=6, column=0)
 
-        # all that has to do with the words chosen to be added to the group
+        # all that has to do with the words chosen to be added to the group #
         d_chosen_words_label = Label(self, text="Words chosen thus far:").grid(row=4, column=1)
-        d_chosen_words = Listbox(self)
+        d_chosen_words = Listbox(self, selectmode="multiple")
         d_chosen_words.grid(row=5, column=1)
         d_remove_btn = Button(self, text="Remove chosen words", command=remove_words_chosen).grid(row=6, column=1)
 
-        # all that has to do with the group definition
+        # all that has to do with the group definition #
         group_name_str = StringVar()
         group_name_label = Label(self, text="Group name:").grid(row=7, column=0)
         group_name_field = Entry(self, textvariable=group_name_str).grid(row=7, column=1)
         add_group_btn = Button(self, text="Add words to given group", command=group_ui_into_db).grid(row=8, column=0)
 
-        # input checker
+        # input checker #
         input_checker_text = StringVar()
         input_checker_label = Label(self, textvariable=input_checker_text).grid(row=8, column=1)
 
