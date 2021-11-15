@@ -283,6 +283,13 @@ class GroupPage(Frame):
                 d_chosen_words.delete(index-no_words_deleted)
                 no_words_deleted += 1
 
+        def get_words_from_input():
+            # first remove the stuff that is already there
+            song_words.delete(0, END)
+            # now add from input the song words
+            song_words_list = SearchSongWords(author_value.get(), title_value.get()).split('\n')
+            for w in song_words_list:
+                song_words.insert(END, w)
         author_value = StringVar()
         title_value = StringVar()
 
@@ -294,22 +301,18 @@ class GroupPage(Frame):
         author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
         title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
 
-        song_word_label = Label(self, text="Words of song:").grid(row=3, column=1)
+        find_song_words_btn = Button(self, text="Find song words", command=get_words_from_input).grid(row=3, column=2)
+        song_word_label = Label(self, text="Words of song:").grid(row=4, column=1)
         song_words = Listbox(self)
-        song_words.grid(row=4, column=1)
-        #############TEST###############
-        song_words.insert(END, "discord")
-        song_words.insert(END, "presides")
-        song_words.insert(END, "in")
-        song_words.insert(END, "society")
-        #####################################
-        add_btn = Button(self, text="Add chosen words", command=add_words_to_group).grid(row=5, column=1)
+        song_words.grid(row=5, column=1)
+        song_words.insert(END, "Please enter author and title.")
 
+        add_btn = Button(self, text="Add chosen words", command=add_words_to_group).grid(row=6, column=1)
 
-        d_chosen_words_label= Label(self, text="Words chosen thus far:").grid(row=3, column=2)
+        d_chosen_words_label= Label(self, text="Words chosen thus far:").grid(row=4, column=2)
         d_chosen_words = Listbox(self)
-        d_chosen_words.grid(row=4, column=2)
-        d_remove_btn = Button(self, text="Remove chosen words", command=remove_words_chosen).grid(row=5, column=2)
+        d_chosen_words.grid(row=5, column=2)
+        d_remove_btn = Button(self, text="Remove chosen words", command=remove_words_chosen).grid(row=6, column=2)
 
         #TODO add group name field and "add group to database"
 
