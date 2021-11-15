@@ -49,11 +49,7 @@ class UploadSongPage(Frame):
             copyright_info = copyright_value.get()
             song_lyrics = song_text_preview.get("1.0", END)
             insert_into_database(author_info, title_info, album_info, copyright_info, song_lyrics)
-            print('Submitted: Author: {}, title: {}, album: {}, copyright: {}, song lyrics: {}'.format(author_info,
-                                                                                                       title_info,
-                                                                                                       album_info,
-                                                                                                       copyright_info,
-                                                                                                       song_lyrics))
+            print('Submitted: Author: {}, title: {}, album: {}, copyright: {}, song lyrics: {}'.format(author_info, album_info, copyright_info, song_lyrics))
 
         def open_file():
             text_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a text file with song lyrics",
@@ -260,7 +256,37 @@ class ShowContext(Frame):
         # words_menu = OptionMenu(self, options_words, *list, command=set_chosen_word)
         # words_menu.grid(row=5, column=2)
 
-        search_word_contexts = Button(self, text="Search word context", command=search_word_context()).grid(row=6, column=2)
+    def search_word_context(self):
+        print("clicked")
+        print(11111)
+        self.context_preview.delete("1.0", "end")
+        author = self.author_value.get()
+        title = self.title_value.get()
+        # to avoid crash at first init:
+        if (author == "" or title == ""):
+            self.context_preview.insert(INSERT, """Search for song and then choose word to show its context""")
+        else:
+            context_found = ReturnWordContext(author, title, self.choice)
+            print(context_found)
+        # #TODO - add search for appearances of the word
+
+
+    def search_song_words_desc(self):
+        # TODO - add errors handling (in case song not found, etc)
+        self.context_preview.delete("1.0", "end")
+        author = self.author_value.get()
+        title = self.title_value.get()
+        if author == "" or title == "":
+            self.context_preview.insert(INSERT, "Please enter author and title.")
+        found_words = SearchSongWordsOrReturnNone(author, title)
+        if found_words == None:
+            self.context_preview.insert(INSERT, "Song with this author and title not found.")
+        else:
+            self.context_preview.insert(INSERT,
+                                   """Choose word from the dropdown and then click "Search word context" button.""")
+            list_found_words = found_words
+            words_menu = OptionMenu(self, self.options_words, *list_found_words, command=self.set_chosen_word)
+            words_menu.grid(row=5, column=2)
 
 class GroupPage(Frame):
     def __init__(self, parent, controller):
