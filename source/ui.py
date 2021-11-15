@@ -268,6 +268,7 @@ class ShowContext(Frame):
         else:
             context_found = ReturnWordContext(author, title, self.choice)
             print(context_found)
+            self.context_preview.insert(INSERT, context_found)
         # #TODO - add search for appearances of the word
 
 
