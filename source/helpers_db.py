@@ -48,3 +48,5 @@ def SearchWordByPositionInSong(author, title, verseNum, lineNum, wordNum):
         return "Word with this position not found."
     return search_word_by_id(word_id)
 
+def GroupUI(name, words):
+    pass

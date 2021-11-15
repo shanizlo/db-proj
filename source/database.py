@@ -73,18 +73,6 @@ def insert_contains(word_id, song_id, verse_num, sentence_num, word_position):
                        {'word_id': word_id, 'song_id': song_id, 'verse_num': verse_num, 'sentence_num': sentence_num,
                         'word_position': word_position})
 
-
-def create_group(group_name):
-    try:
-        with connection:
-            cursor.execute("INSERT INTO groups VALUES (:group_id, :group_name) returning group_id;",
-                           {'group_id': None, 'group_name': group_name.group_name})
-            # In case group with this name already exists
-            return cursor.fetchone()[0]
-
-    except sqlite3.Error as err:
-        return err
-
 def search_song_id(author: str, title: str):
     with connection:
         cursor.execute("SELECT song_id FROM songs WHERE title = :song_title AND author = :song_author;",
@@ -123,6 +111,27 @@ def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wor
         else:
             return None
 
+def create_group(group_name):
+    try:
+        with connection:
+            cursor.execute("INSERT INTO groups VALUES (:group_id, :group_name) returning group_id;",
+                           {'group_id': None, 'group_name': group_name.group_name})
+            # In case group with this name already exists
+            return cursor.fetchone()[0]
+
+    except sqlite3.Error as err:
+        return err
+
+
+def add_word_to_existing_group(groupId: int, wordId: int):
+    # TODO: make sure no duplicates are found.
+    with connection:
+        pass
+
+def find_group_by_id(groupId: int):
+    with connection:
+        pass
+
 # Function for debugging, nor for functionality
 def getAllSongEntries():
     with connection:
@@ -141,7 +150,7 @@ def getfVersesNumsInSong():
         cursor.execute("SELECT verse_num FROM contains WHERE song_id = 1 ORDER BY verse_num DESC;")
         return cursor.fetchall()
 
-# TODO: add words to group - find group by id and add words
+
 #  TODO: add create phrase
 
 # TODO: add words to phrase

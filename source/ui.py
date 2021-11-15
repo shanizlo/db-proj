@@ -290,35 +290,50 @@ class GroupPage(Frame):
             song_words_list = SearchSongWords(author_value.get(), title_value.get()).split('\n')
             for w in song_words_list:
                 song_words.insert(END, w)
+
+        def group_ui_into_db():
+            if group_name_str.get() == None or group_name_str.get() == "" or d_chosen_words.curselection() == None:
+                input_checker_text.set("Please enter valid group name and choose at least one word.")
+            else:
+                pass
+
+        # author and title strings #
         author_value = StringVar()
         title_value = StringVar()
 
+        # home button and title label #
         home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
-        page_title_label = Label(self, text="Choose words out of a chosen song/s. Enter the group name you wish to add to/create.").grid(row=0, column=2)
+        page_title_label = Label(self, text="Choose words out of a chosen song/s. Enter the group name you wish to add to/create.").grid(row=0, column=1)
 
-        author_label = Label(self, text="Author:").grid(row=1, column=1)
-        title_label = Label(self, text="Song title:").grid(row=2, column=1)
-        author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
-        title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
+        # all that has to do with author and title #
+        author_label = Label(self, text="Author:").grid(row=1, column=0)
+        title_label = Label(self, text="Song title:").grid(row=2, column=0)
+        author_field = Entry(self, textvariable=author_value).grid(row=1, column=1)
+        title_field = Entry(self, textvariable=title_value).grid(row=2, column=1)
 
-        find_song_words_btn = Button(self, text="Find song words", command=get_words_from_input).grid(row=3, column=2)
-        song_word_label = Label(self, text="Words of song:").grid(row=4, column=1)
+        # all that has to do with the words of song that is inputted from the user
+        find_song_words_btn = Button(self, text="Find song words", command=get_words_from_input).grid(row=3, column=1)
+        song_word_label = Label(self, text="Words of song:").grid(row=4, column=0)
         song_words = Listbox(self)
-        song_words.grid(row=5, column=1)
-        song_words.insert(END, "Please enter author and title.")
+        song_words.grid(row=5, column=0)
 
-        add_btn = Button(self, text="Add chosen words", command=add_words_to_group).grid(row=6, column=1)
+        add_btn = Button(self, text="Add chosen words", command=add_words_to_group).grid(row=6, column=0)
 
-        d_chosen_words_label= Label(self, text="Words chosen thus far:").grid(row=4, column=2)
+        # all that has to do with the words chosen to be added to the group
+        d_chosen_words_label= Label(self, text="Words chosen thus far:").grid(row=4, column=1)
         d_chosen_words = Listbox(self)
-        d_chosen_words.grid(row=5, column=2)
-        d_remove_btn = Button(self, text="Remove chosen words", command=remove_words_chosen).grid(row=6, column=2)
+        d_chosen_words.grid(row=5, column=1)
+        d_remove_btn = Button(self, text="Remove chosen words", command=remove_words_chosen).grid(row=6, column=1)
 
-        #TODO add group name field and "add group to database"
+        # all that has to do with the group definition
+        group_name_str = StringVar()
+        group_name_label = Label(self, text="Group name:").grid(row=7, column=0)
+        group_name_field = Entry(self, textvariable=group_name_str).grid(row=7, column=1)
+        add_group_btn = Button(self, text="Add words to given group", command=group_ui_into_db).grid(row=8, column=0)
 
-
-
-
+        # input checker
+        input_checker_text = StringVar()
+        input_checker_label = Label(self, textvariable=input_checker_text).grid(row=8, column=1)
 
 
 
