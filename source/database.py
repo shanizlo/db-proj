@@ -1,7 +1,7 @@
 import sqlite3
 
-from source import TxtParser
-from source.entities import *
+from text_parser import parse
+from entities import *
 
 connection = sqlite3.connect(":memory:")
 cursor = connection.cursor()
@@ -16,7 +16,7 @@ def insert_into_database(author, title, album, copyright, lyrics):
     # If there was an error inserting the song - don't continue
     try:
         song_id = insert_song(the_song)  # inserting the song and getting its id for the contains
-        the_words_with_context = TxtParser.parse(lyrics)  # the parsed lyrics with all their information
+        the_words_with_context = parse(lyrics)  # the parsed lyrics with all their information
 
         for wc in the_words_with_context:
             insert_word(Word(wc[0]))
