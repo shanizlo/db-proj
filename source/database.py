@@ -122,15 +122,24 @@ def create_group(group_name):
     except sqlite3.Error as err:
         return err
 
-
-def add_word_to_existing_group(groupId: int, wordId: int):
-    # TODO: make sure no duplicates are found.
+def is_word_in_group(groupId: int, wordId: int):
     with connection:
-        pass
+        cursor.execute("SELECT group_id FROM wordsInGroup WHERE group_id = :groupId AND word_id = :wordId",
+                       {'groupId': groupId, 'wordId': wordId})
+        return cursor.fetchone() is not None
 
-def find_group_by_id(groupId: int):
+def add_word_to_group(groupId: int, wordId: int):
     with connection:
-        pass
+        cursor.execute("INSERT INTO wordsInGroup VALUES (:groupId, :wordId)", {'groupId': groupId, 'wordId': wordId})
+
+def find_group_id_by_name(name: str):
+    with connection:
+        cursor.execute("SELECT group_id FROM groups WHERE group_name = :name", {'name': name})
+        id = cursor.fetchone()
+        if id is None:
+            return None
+        else:
+            return id[0]
 
 # Function for debugging, nor for functionality
 def getAllSongEntries():
