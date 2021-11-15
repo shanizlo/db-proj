@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import filedialog
-import helpers_db
+from helpers_db import *
+from database import *
+
 
 class App(Tk):
     def __init__(self, *args, **kwargs):
@@ -69,28 +71,6 @@ class UploadSongPage(Frame):
             song_text = text_file.read()
             song_text_preview.insert(END, song_text)
             print("Song submitted")
-
-        # def open_file():
-        #     # text_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a text file with song lyrics",
-        #     #                                    filetypes=[("txt files", "*.txt")])
-        #     text_file_dir = filedialog.askdirectory(mustexist=True)
-        #
-        #
-        #     filename_text = Text(self, height=3, width=70)
-        #     filename_text.grid(row=5, column=2)
-        #
-        #     filename_text.delete("1.0", "end")
-        #     song_text_preview.delete("1.0", "end")
-        #
-        #     if text_file_dir.endswith(".txt"):
-        #         filename_text.insert(END, text_file_dir)
-        #         # song_text = text_file.read()
-        #         song_text = open(text_file_dir, "r").read()
-        #         song_text_preview.insert(END, song_text)
-        #         print("Song submitted")
-        #     else:
-        #         filename_text.insert(END, "Input isn't a .txt file.")
-        #         print("Song not submitted.")
 
         page_title_label = Label(self, text="Upload Song").grid(row=0, column=2)
 

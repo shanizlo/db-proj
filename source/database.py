@@ -12,11 +12,11 @@ cursor.executescript(sql_as_string)
 
 
 def insert_into_database(author, title, album, copyright, lyrics):
-    the_song = Song(author, title, album, copyright)  # making the song for inserting
+    the_song = Song(author.lower(), title.lower(), album.lower(), copyright.lower())  # making the song for inserting
     # If there was an error inserting the song - don't continue
     try:
         song_id = insert_song(the_song)  # inserting the song and getting its id for the contains
-        the_words_with_context = TxtParser.parse(lyrics)  # the parsed lyrics with all their information
+        the_words_with_context = parse(lyrics)  # the parsed lyrics with all their information
 
         for wc in the_words_with_context:
             insert_word(Word(wc[0]))
@@ -45,7 +45,7 @@ def insert_song(song: Song):
 def insert_word(word: Word):
     with connection:
         cursor.execute("INSERT OR IGNORE INTO words VALUES (:word_id, :word_value, :word_length) returning word_id;",
-                       {'word_id': None, 'word_value': word.value, 'word_length': word.length})
+                       {'word_id': None, 'word_value': word.value.lower(), 'word_length': word.length})
         inserted_word_id = cursor.fetchone()
         # This is needed in case word ignored and there no word_id created
         if inserted_word_id is not None:
@@ -88,7 +88,7 @@ def create_group(group_name):
 def search_song_id(author: str, title: str):
     with connection:
         cursor.execute("SELECT song_id FROM songs WHERE title = :song_title AND author = :song_author;",
-                       {'song_title': title, 'song_author': author})
+                       {'song_title': title.lower(), 'song_author': author.lower()})
         found_song_id = cursor.fetchone()
         if found_song_id is not None:
             return found_song_id[0]
