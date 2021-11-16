@@ -16,7 +16,8 @@ class App(Tk):
         self.frames = {}
 
         #  Important when adding a frame
-        for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext, GroupPage):
+        for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext, GroupPage
+                  , ShowGroupPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -38,6 +39,7 @@ class HomePage(Frame):
         find_word_btn = Button(self, text="Find Word", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
         word_context_btn = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
         add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=2)
+        group_words_btn = Button(self, text="Show words in group", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=2, column=3)
 
 # TODO: add printing error message
 class UploadSongPage(Frame):
@@ -296,7 +298,7 @@ class GroupPage(Frame):
                 input_checker_text.set("Please enter valid group name and choose at least one word.")
             else:
                 words = [d_chosen_words.get(i) for i in range(d_chosen_words.size())]
-                if From_UI_Into_Group(group_name_str.get(), words):
+                if From_UI_Into_Group(group_name_str.get().lower(), words):
                     input_checker_text.set("Inserted the words successfully into the existing group.")
                 else:
                     input_checker_text.set("Created a new group with these given words.")
@@ -339,7 +341,40 @@ class GroupPage(Frame):
         input_checker_text = StringVar()
         input_checker_label = Label(self, textvariable=input_checker_text).grid(row=8, column=1)
 
+class ShowGroupPage(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
 
+        def get_group():
+            if group_name_value.get() is None or group_name_value.get() == "":
+                output_label_str.set("Invalid group name.")
+            else:
+                words_in_group = Get_All_Words_In_Group(group_name_value.get().lower())
+                if words_in_group is None:
+                    output_label_str.set("Group with this name not found.")
+                else:
+                    for w in words_in_group:
+                        group_words_preview.insert(END, w + "\n")
+                    output_label_str.set("The words in the group:")
+
+        # Page definitions #
+        home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+        page_title_label = Label(self,
+                                 text="Input the name of the group and this'll show you the words in it.").grid(
+            row=0, column=1)
+
+        # Group entry and button #
+        group_name_value = StringVar()
+        group_name_label = Label(self, text="Group name:").grid(row=1, column=0)
+        group_entry = Entry(self, textvariable=group_name_value).grid(row=1, column=1)
+        check_group = Button(self, text="Find group", command=get_group).grid(row=1, column=2)
+
+        # output gotten or not label #
+        output_label_str = StringVar()
+        output_label = Label(self, textvariable=output_label_str).grid(row=2, column=1)
+        # words in the group preview
+        group_words_preview = Text(self, height=15, width=70)
+        group_words_preview.grid(row=7, column=2)
 
 app = App()
 app.title("Welcome to Songs Database")

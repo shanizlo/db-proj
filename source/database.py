@@ -150,6 +150,11 @@ def find_group_id_by_name(name: str):
         else:
             return id[0]
 
+def all_words_in_group(groupId: int):
+    with connection:
+        cursor.execute("SELECT word_id FROM wordsInGroup WHERE group_id = :groupId", {'groupId': groupId})
+        return cursor.fetchall()
+
 # Function for debugging, nor for functionality
 def getAllSongEntries():
     with connection:

@@ -60,3 +60,10 @@ def From_UI_Into_Group(name: str, words):
         if not is_word_in_group(group_id, w_id):
             add_word_to_group(group_id, w_id)
     return group_existed
+
+def Get_All_Words_In_Group(name: str):
+    group_id = find_group_id_by_name(name)
+    if group_id is None:
+        return None
+    else:
+        return [search_word_by_id(r[0]) for r in all_words_in_group(group_id)]
