@@ -120,11 +120,14 @@ class StatisticsPage(Frame):
         avg_chars_in_verse = Label(self, textvariable=avg_chars_in_verse_value).grid(row=5, column=3)
 
         def show_statistics():
-            #TODO get statistics from author and title which yields song_id
-            #TEST VALUES
-            num_words_in_song_value.set(7)
-            avg_chars_in_sentence_value.set(3.7)
-            avg_chars_in_verse_value.set(4.2)
+            if stringOk(author_value.get()) and stringOk(title_value.get()):
+                output = StatisticsOutput(author_value.get(), title_value.get())
+                if output is not None:  # song found
+                    pass
+                else:  # song not found
+                    pass
+            else:  # input was bad
+                pass
 
 
         statistics_button = Button(self, text="Show statistics", command=show_statistics).grid(row=3, column=1)
