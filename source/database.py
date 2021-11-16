@@ -102,6 +102,11 @@ def search_words_ids_song_contains(song_id: str):
         found_words_ids = cursor.fetchall()
         return found_words_ids
 
+def search_words_in_verse(song_id: str, verse_num: int):
+    with connection:
+        cursor.execute("SELECT * FROM contains WHERE song_id = :song_id AND verse_num = :verse_num",
+                       {'song_id': song_id, 'verse_num': verse_num})
+        return cursor.fetchall()
 # Finds word value
 def search_word_by_id(word_id: str):
     with connection:
@@ -139,6 +144,10 @@ def get_words_in_line(song_id: str, verse: int, line: int):
                        {'song_id': song_id, 'verse_num': verse, 'sen_num': line})
         return cursor.fetchall()
 
+def get_word_length(word_id: int):
+    with connection:
+        cursor.execute("SELECT word_length FROM words WHERE word_id = :word_id", {'word_id': word_id})
+        return cursor.fetchone()[0]
 # Function for debugging, nor for functionality
 def getAllSongEntries():
     with connection:

@@ -1,6 +1,7 @@
 from database import *
 from helpers_validators import *
 
+
 # Finds song by author and title and shows it words in alphabetic order as text
 def SearchSongWords(author: str, title: str):
     if author == "" or title == "":
@@ -79,3 +80,16 @@ def ReturnWordContext(author: str, title: str, word_value):
         print(context_list)
     context_as_text = "\n".join(context_list)
     return context_as_text
+
+
+def StatisticsOutput(author: str, title: str):
+    song_id = search_song_id(author, title)
+    if song_id is not None:
+        output = [0, 0, 0]  # Num words in song, Average characters in sentence, Average characters in verse
+        number_of_verses = 0
+        number_of_sentences = 0
+        num_words_in_song = 0
+    else:
+        return None
+def stringOk(s: str):
+    return s is not None and s != ""
