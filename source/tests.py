@@ -211,3 +211,5 @@ class DataBaseFunctionsTests(unittest.TestCase):
 
         # Assert
         self.assertEqual(word_id_found, 19)
+
+# TODO: add statistics tests
