@@ -49,7 +49,7 @@ class UploadSongPage(Frame):
             copyright_info = copyright_value.get()
             song_lyrics = song_text_preview.get("1.0", END)
             insert_into_database(author_info, title_info, album_info, copyright_info, song_lyrics)
-            print('Submitted: Author: {}, title: {}, album: {}, copyright: {}, song lyrics: {}'.format(author_info, album_info, copyright_info, song_lyrics))
+            print('Submitted: Author: {}, title: {}, album: {}, copyright: {}, song lyrics: {}'.format(author_info, title_info, album_info, copyright_info, song_lyrics))
 
         def open_file():
             text_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a text file with song lyrics",
@@ -100,12 +100,15 @@ class StatisticsPage(Frame):
         page_title_label = Label(self, text="Statistics").grid(row=0, column=2)
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
+        # all variables pertaining to the different fields in the page #
         author_value = StringVar()
         title_value = StringVar()
         num_words_in_song_value = IntVar()
         avg_chars_in_sentence_value = DoubleVar()
         avg_chars_in_verse_value = DoubleVar()
+        output_message = StringVar()
 
+        # all parts
         author_label = Label(self, text="Author:").grid(row=1, column=1)
         title_label = Label(self, text="Song title:").grid(row=2, column=1)
         author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
@@ -119,18 +122,21 @@ class StatisticsPage(Frame):
         avg_chars_in_sentence = Label(self, textvariable=avg_chars_in_sentence_value).grid(row=5, column=2)
         avg_chars_in_verse = Label(self, textvariable=avg_chars_in_verse_value).grid(row=5, column=3)
 
+        output_message_label = Label(self, textvariable=output_message).grid(row=6, column=2)
         def show_statistics():
             if stringOk(author_value.get()) and stringOk(title_value.get()):
                 output = StatisticsOutput(author_value.get(), title_value.get())
                 if output is not None:  # song found
-                    pass
+                    num_words_in_song_value.set(output[0])
+                    avg_chars_in_sentence_value.set(output[1])
+                    avg_chars_in_verse_value.set(output[2])
+                    output_message.set("Found your wanted song.")
                 else:  # song not found
-                    pass
+                    output_message.set("Unable to find the wanted song.")
             else:  # input was bad
-                pass
+                output_message.set("Please type valid input (nothing empty).")
 
-
-        statistics_button = Button(self, text="Show statistics", command=show_statistics).grid(row=3, column=1)
+        statistics_button = Button(self, text="Show statistics", command=show_statistics).grid(row=3, column=2)
 
 class ShowWordsInSongPage(Frame):
     def __init__(self, parent, controller):
