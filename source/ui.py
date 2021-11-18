@@ -3,7 +3,6 @@ from tkinter import filedialog
 from helpers_db import *
 from database import *
 
-
 class App(Tk):
     def __init__(self, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
@@ -39,7 +38,6 @@ class HomePage(Frame):
         find_word_btn = Button(self, text="Find Word", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
         word_context_btn = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
         add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=2)
-        group_words_btn = Button(self, text="Show words in group", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=2, column=3)
 
 # TODO: add printing error message
 class UploadSongPage(Frame):
@@ -61,7 +59,7 @@ class UploadSongPage(Frame):
 
         def open_file():
             text_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a text file with song lyrics",
-                                                filetypes=[("txt files", "*.txt")])
+                                               filetypes=[("txt files", "*.txt")])
             filename_text = Text(self, height=3, width=70)
             filename_text.grid(row=5, column=2)
 
@@ -108,12 +106,15 @@ class StatisticsPage(Frame):
         page_title_label = Label(self, text="Statistics").grid(row=0, column=2)
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
+        # all variables pertaining to the different fields in the page #
         author_value = StringVar()
         title_value = StringVar()
         num_words_in_song_value = IntVar()
         avg_chars_in_sentence_value = DoubleVar()
         avg_chars_in_verse_value = DoubleVar()
+        output_message = StringVar()
 
+        # all parts
         author_label = Label(self, text="Author:").grid(row=1, column=1)
         title_label = Label(self, text="Song title:").grid(row=2, column=1)
         author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
@@ -127,15 +128,21 @@ class StatisticsPage(Frame):
         avg_chars_in_sentence = Label(self, textvariable=avg_chars_in_sentence_value).grid(row=5, column=2)
         avg_chars_in_verse = Label(self, textvariable=avg_chars_in_verse_value).grid(row=5, column=3)
 
+        output_message_label = Label(self, textvariable=output_message).grid(row=6, column=2)
         def show_statistics():
-            #TODO get statistics from author and title which yields song_id
-            #TEST VALUES
-            num_words_in_song_value.set(7)
-            avg_chars_in_sentence_value.set(3.7)
-            avg_chars_in_verse_value.set(4.2)
+            if stringOk(author_value.get()) and stringOk(title_value.get()):
+                output = StatisticsOutput(author_value.get(), title_value.get())
+                if output is not None:  # song found
+                    num_words_in_song_value.set(output[0])
+                    avg_chars_in_sentence_value.set(output[1])
+                    avg_chars_in_verse_value.set(output[2])
+                    output_message.set("Found your wanted song.")
+                else:  # song not found
+                    output_message.set("Unable to find the wanted song.")
+            else:  # input was bad
+                output_message.set("Please type valid input (nothing empty).")
 
-
-        statistics_button = Button(self, text="Show statistics", command=show_statistics).grid(row=3, column=1)
+        statistics_button = Button(self, text="Show statistics", command=show_statistics).grid(row=3, column=2)
 
 class ShowWordsInSongPage(Frame):
     def __init__(self, parent, controller):
@@ -264,7 +271,38 @@ class ShowContext(Frame):
         # words_menu = OptionMenu(self, options_words, *list, command=set_chosen_word)
         # words_menu.grid(row=5, column=2)
 
-        search_word_contexts = Button(self, text="Search word context", command=search_word_context()).grid(row=6, column=2)
+    def search_word_context(self):
+        print("clicked")
+        print(11111)
+        self.context_preview.delete("1.0", "end")
+        author = self.author_value.get()
+        title = self.title_value.get()
+        # to avoid crash at first init:
+        if (author == "" or title == ""):
+            self.context_preview.insert(INSERT, """Search for song and then choose word to show its context""")
+        else:
+            context_found = ReturnWordContext(author, title, self.choice)
+            print(context_found)
+            self.context_preview.insert(INSERT, context_found)
+        # #TODO - add search for appearances of the word
+
+
+    def search_song_words_desc(self):
+        # TODO - add errors handling (in case song not found, etc)
+        self.context_preview.delete("1.0", "end")
+        author = self.author_value.get()
+        title = self.title_value.get()
+        if author == "" or title == "":
+            self.context_preview.insert(INSERT, "Please enter author and title.")
+        found_words = SearchSongWordsOrReturnNone(author, title)
+        if found_words == None:
+            self.context_preview.insert(INSERT, "Song with this author and title not found.")
+        else:
+            self.context_preview.insert(INSERT,
+                                   """Choose word from the dropdown and then click "Search word context" button.""")
+            list_found_words = found_words
+            words_menu = OptionMenu(self, self.options_words, *list_found_words, command=self.set_chosen_word)
+            words_menu.grid(row=5, column=2)
 
 class GroupPage(Frame):
     def __init__(self, parent, controller):
