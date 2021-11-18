@@ -144,29 +144,30 @@ class ShowWordsInSongPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        def search_song_words_desc():
-            song_words_preview.delete("1.0", "end")
-            author = author_value.get()
-            title = title_value.get()
-            print("searching for song words for author {}, title {}".format(author, title))
-            song_words = SearchSongWords(author, title)
-            song_words_preview.insert(END, song_words)
-
         page_title_label = Label(self, text="Show Words in Song").grid(row=0, column=2)
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
-        author_value = StringVar()
-        title_value = StringVar()
+        self.author_value = StringVar()
+        self.title_value = StringVar()
 
-        author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
-        title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
-        author_label = Label(self, text="Author").grid(row=1, column=1)
-        title_label = Label(self, text="Song title").grid(row=2, column=1)
+        self.author_field = Entry(self, textvariable=self.author_value).grid(row=1, column=2)
+        self.title_field = Entry(self, textvariable=self.title_value).grid(row=2, column=2)
+        self.author_label = Label(self, text="Author").grid(row=1, column=1)
+        self.title_label = Label(self, text="Song title").grid(row=2, column=1)
 
-        search_button = Button(self, text="Search song", command=search_song_words_desc).grid(row=11, column=2)
+        search_button = Button(self, text="Search song", command=self.search_song_words_desc).grid(row=11, column=2)
 
-        song_words_preview = Text(self, height=15, width=70)
-        song_words_preview.grid(row=7, column=2)
+        self.song_words_preview = Text(self, height=15, width=70)
+        self.song_words_preview.grid(row=7, column=2)
+
+    def search_song_words_desc(self):
+        self.song_words_preview.delete("1.0", "end")
+        author = self.author_value.get()
+        title = self.title_value.get()
+        print("searching for song words for author {}, title {}".format(author, title))
+        song_words = SearchSongWords(author, title)
+        self.song_words_preview.insert(END, song_words)
+
 
 class ShowWordByPlace(Frame):
     def __init__(self, parent, controller):
@@ -212,65 +213,44 @@ class ShowWordByPlace(Frame):
         found_word_preview = Text(self, height=1, width=70)
         found_word_preview.grid(row=12, column=2)
 
+
 class ShowContext(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        list_found_words = []
+        self.list_found_words = []
 
-        # def search_song_words_desc():
-        #     # TODO - add errors handling (in case song not found, etc)
-        #     context_preview.delete("1.0", "end")
-        #     author = author_value.get()
-        #     title = title_value.get()
-        #     if author == "" or title == "":
-        #         context_preview.insert(INSERT, "Please enter author and title.")
-        #     found_words = SearchSongWordsOrReturnNone(author, title)
-        #     if found_words == None:
-        #         context_preview.insert(INSERT, "Song with this author and title not found.")
-        #     else:
-        #         context_preview.insert(INSERT, """Choose word from the dropdown and then click "Search word context" button.""")
-        #         list_found_words = found_words
-        #         words_menu = OptionMenu(self, options_words, *list_found_words, command=set_chosen_word)
-        #         words_menu.grid(row=5, column=2)
-        #
-        # def search_word_context():
-        #     #TODO - add search for appearences of the word
-        #     return True
-
-        def set_chosen_word(choice):
-            choice = options_words.get()
-            print(choice)
-
-        page_title_label = Label(self, text="Show Context of Word. Search for song, then choose the word to show context for.").grid(row=0, column=2)
+        self.page_title_label = Label(self, text="Show Context of Word. Search for song, then choose the word to show context for.").grid(row=0, column=2)
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
-        author_value = StringVar()
-        title_value = StringVar()
+        self.author_value = StringVar()
+        self.title_value = StringVar()
 
-        author_field = Entry(self, textvariable=author_value).grid(row=1, column=2)
-        title_field = Entry(self, textvariable=title_value).grid(row=2, column=2)
-        author_label = Label(self, text="Author").grid(row=1, column=1)
-        title_label = Label(self, text="Song title").grid(row=2, column=1)
+        self.author_field = Entry(self, textvariable=self.author_value).grid(row=1, column=2)
+        self.title_field = Entry(self, textvariable=self.title_value).grid(row=2, column=2)
+        self.author_label = Label(self, text="Author").grid(row=1, column=1)
+        self.title_label = Label(self, text="Song title").grid(row=2, column=1)
 
-        search_button = Button(self, text="Search song", command=self.search_song_words_desc).grid(row=4, column=2)
+        self.search_button = Button(self, text="Search song", command=self.search_song_words_desc).grid(row=4, column=2)
 
-        context_preview = Text(self, height=15, width=70)
-        context_preview.grid(row=11, column=2)
+        self.context_preview = Text(self, height=15, width=70)
+        self.context_preview.grid(row=11, column=2)
 
-        options_words = StringVar()
-        options_words.set("Choose word")
+        self.options_words = StringVar()
+        self.options_words.set("Choose word")
 
-        # TODO: use output of find song words then  list = output.split()
-        # list = ['Tutorial', 'CSS', 'Tutorial', 'JavaScript', 'Tutorial', 'How', 'To', 'Tutorial', 'SQL', 'Tutorial', 'Python', 'Tutorial', 'W3.CSS', 'Tutorial', 'Bootstrap', 'Tutorial', 'PHP', 'Tutorial', 'Java', 'Tutorial', 'C++', 'Tutorial', 'jQuery', 'Tutorial']
-        list = [""]
-        # words_menu = OptionMenu(self, options_words, *list, command=set_chosen_word)
-        # words_menu.grid(row=5, column=2)
+        self.list = [""]
+        self.words_menu = OptionMenu(self, self.options_words, self.list, command=self.set_chosen_word)
+        self.words_menu.grid(row=5, column=2)
+        self.choice = ""
 
-        search_word_contexts = Button(self, text="Search word context", command=self.search_word_context).grid(row=6, column=2)
+        self.search_word_contexts = Button(self, text="Search word context", command=self.search_word_context).grid(row=6, column=2)
+
+    def set_chosen_word(self, opt):
+        self.choice = opt
+        print(self.choice)
 
     def search_word_context(self):
-        print("clicked")
         self.context_preview.delete("1.0", "end")
         author = self.author_value.get()
         title = self.title_value.get()
@@ -294,10 +274,11 @@ class ShowContext(Frame):
             self.context_preview.insert(INSERT, "Song with this author and title not found.")
         else:
             self.context_preview.insert(INSERT,
-                                        """Choose word from the dropdown and then click "Search word context" button.""")
+                                   """Choose word from the dropdown and then click "Search word context" button.""")
             list_found_words = found_words
             words_menu = OptionMenu(self, self.options_words, *list_found_words, command=self.set_chosen_word)
             words_menu.grid(row=5, column=2)
+
 
 class GroupPage(Frame):
     def __init__(self, parent, controller):
@@ -374,6 +355,7 @@ class GroupPage(Frame):
         input_checker_text = StringVar()
         input_checker_label = Label(self, textvariable=input_checker_text).grid(row=8, column=1)
 
+
 class ShowGroupPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -408,6 +390,7 @@ class ShowGroupPage(Frame):
         # words in the group preview
         group_words_preview = Text(self, height=15, width=70)
         group_words_preview.grid(row=7, column=2)
+
 
 app = App()
 app.title("Welcome to Songs Database")

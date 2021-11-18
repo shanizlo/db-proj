@@ -78,7 +78,7 @@ def ReturnWordContext(author: str, title: str, word_value):
             val = search_word_by_id(id[0])
             this_w_context.append(val)
         this_w_context_as_text = " ".join(this_w_context)
-        this_w_context_as_text += (' (verse: %s, line: %s)\n' % (this_w_verse, this_w_line))
+        this_w_context_as_text += (' (verse: %s, line: %s)\n' %(this_w_verse, this_w_line))
         context_list.append(this_w_context_as_text)
         print(context_list)
     context_as_text = "\n".join(context_list)
