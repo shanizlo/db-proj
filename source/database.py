@@ -78,7 +78,7 @@ def create_group(group_name):
     try:
         with connection:
             cursor.execute("INSERT INTO groups VALUES (:group_id, :group_name) returning group_id;",
-                           {'group_id': None, 'group_name': group_name.group_name})
+                           {'group_id': None, 'group_name': group_name.lower()})
             # In case group with this name already exists
             return cursor.fetchone()[0]
 

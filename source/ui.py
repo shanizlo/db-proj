@@ -38,6 +38,7 @@ class HomePage(Frame):
         find_word_btn = Button(self, text="Find Word", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
         word_context_btn = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
         add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=2)
+        show_group_btn = Button(self, text="Show words in group", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=2, column=3)
 
 # TODO: add printing error message
 class UploadSongPage(Frame):
@@ -270,6 +271,8 @@ class ShowContext(Frame):
         list = [""]
         # words_menu = OptionMenu(self, options_words, *list, command=set_chosen_word)
         # words_menu.grid(row=5, column=2)
+
+        search_word_contexts = Button(self, text="Search word context", command=search_word_context).grid(row=6, column=2)
 
     def search_word_context(self):
         print("clicked")
