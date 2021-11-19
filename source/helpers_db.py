@@ -78,7 +78,7 @@ def ReturnWordContext(author: str, title: str, word_value):
             val = search_word_by_id(id[0])
             this_w_context.append(val)
         this_w_context_as_text = " ".join(this_w_context)
-        this_w_context_as_text += (' (verse: %s, line: %s)\n' % (this_w_verse, this_w_line))
+        this_w_context_as_text += (' (verse: %s, line: %s)\n' %(this_w_verse, this_w_line))
         context_list.append(this_w_context_as_text)
         print(context_list)
     context_as_text = "\n".join(context_list)
@@ -113,3 +113,23 @@ def StatisticsOutput(author: str, title: str):
 
 def stringOk(s: str):
     return s is not None and s != ""
+
+
+def From_UI_Into_Group(name: str, words):
+    group_id = create_group(name)
+    group_existed = False
+    if not isinstance(group_id, int):  # this means if creating the group failed - meaning the group existed
+        group_id = find_group_id_by_name(name)
+        group_existed = True
+    for w in words:
+        w_id = get_id_from_word(w)
+        if not is_word_in_group(group_id, w_id):
+            add_word_to_group(group_id, w_id)
+    return group_existed
+
+def Get_All_Words_In_Group(name: str):
+    group_id = find_group_id_by_name(name)
+    if group_id is None:
+        return None
+    else:
+        return [search_word_by_id(r[0]) for r in all_words_in_group(group_id)]
