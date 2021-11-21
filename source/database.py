@@ -197,16 +197,6 @@ def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wor
         else:
             return None
 
-def get_word_position(song_id: str, word_id: str):
-    with connection:
-        cursor.execute("SELECT verse_num, sentence_num FROM contains WHERE song_id = :song_id AND word_id = :word_id;",
-                       {'song_id': song_id, 'word_id': word_id})
-        word_pos_found = cursor.fetchone()
-        if word_pos_found is not None:
-            return word_pos_found[0]
-        else:
-            return None
-
 def get_words_in_line(song_id: str, verse: int, line: int):
     with connection:
         cursor.execute("SELECT word_id FROM contains WHERE song_id = :song_id AND verse_num = :verse_num AND sentence_num = :sen_num ORDER BY word_position ASC;",
