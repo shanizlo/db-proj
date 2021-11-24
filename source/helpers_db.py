@@ -133,3 +133,23 @@ def Get_All_Words_In_Group(name: str):
         return None
     else:
         return [search_word_by_id(r[0]) for r in all_words_in_group(group_id)]
+
+def Get_All_Indices_From_Words_in_Group(name: str):
+    group_id = find_group_id_by_name(name)
+    if group_id is None:
+        return None
+    else:
+        word_ids_of_group = [r[0] for r in all_words_in_group(group_id)]
+        all_songs = [r[0] for r in get_all_songs_in_db()]
+        if len(all_songs) == 0:
+            return 0
+        else:
+            word_positions = []  # list of lists of the form - (title, author, word, verse_num, sentence_num, word_position)
+            for s_id in all_songs:
+                song_definition = get_song_definition_from_id(s_id)
+                for w_id in word_ids_of_group:
+                    word_positions = get_word_positions(s_id, w_id)
+                    for r in word_positions:
+                        word_positions.append([song_definition[0], song_definition[1], search_word_by_id(w_id), r[0], r[1], r[2]])
+
+            return word_positions

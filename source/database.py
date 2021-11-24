@@ -118,15 +118,20 @@ def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wor
         else:
             return None
 
-def get_word_position(song_id: str, word_id: str):
+def get_word_positions(song_id: str, word_id: str):
     with connection:
-        cursor.execute("SELECT verse_num, sentence_num FROM contains WHERE song_id = :song_id AND word_id = :word_id;",
+        cursor.execute("SELECT verse_num, sentence_num, word_position FROM contains WHERE song_id = :song_id AND word_id = :word_id;",
                        {'song_id': song_id, 'word_id': word_id})
-        word_pos_found = cursor.fetchone()
+        word_pos_found = cursor.fetchall()
         if word_pos_found is not None:
-            return word_pos_found[0]
+            return list(word_pos_found)
         else:
             return None
+
+def get_all_songs_in_db():
+    with connection:
+        cursor.execute("SELECT song_id FROM songs")
+        return cursor.fetchall()
 
 def get_words_in_line(song_id: str, verse: int, line: int):
     with connection:
@@ -196,6 +201,13 @@ def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wor
             return word_id_found[0]
         else:
             return None
+
+
+def get_song_definition_from_id(song_id: str):
+    with conneciton:
+        cursor.execute("SELECT title, author FROM songs WHERE song_id = :song_id", {'song_id': song_id})
+        return cursor.fetchone()[0]
+
 
 def get_words_in_line(song_id: str, verse: int, line: int):
     with connection:
