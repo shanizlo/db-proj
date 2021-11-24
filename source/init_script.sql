@@ -40,11 +40,13 @@ CREATE TABLE IF NOT EXISTS groups (
 );
 
 CREATE TABLE IF NOT EXISTS phrases (
-    phrase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+    phrase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    phrase_name TEXT NOT NULL UNIQUE,
+    CHECK(phrase_name <> '')
+
 );
 
--- TODO: fix duplicate tables names
-CREATE TABLE IF NOT EXISTS phrases (
+CREATE TABLE IF NOT EXISTS wordsInPhrase (
     phrase_id INTEGER NOT NULL,
     word_id INTEGER NOT NULL,
     word_position INTEGER,
