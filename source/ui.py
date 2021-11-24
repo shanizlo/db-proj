@@ -364,13 +364,18 @@ class ShowGroupPage(Frame):
             if group_name_value.get() is None or group_name_value.get() == "":
                 output_label_str.set("Invalid group name.")
             else:
-                words_in_group = Get_All_Words_In_Group(group_name_value.get().lower())
+                words_in_group = Get_All_Indices_From_Words_In_Group(group_name_value.get().lower())
                 if words_in_group is None:
                     output_label_str.set("Group with this name not found.")
+                elif words_in_group == 0:
+                    output_label_str.set("No songs in database.")
                 else:
+                    words_in_group = sorted(words_in_group)
                     for w in words_in_group:
-                        group_words_preview.insert(END, w + "\n")
-                    output_label_str.set("The words in the group:")
+                        group_words_preview.insert(END,  "Found word \"" + w[2] + "\" in song " + w[0] + " by " + w[1]
+                                                   + " at verse " + str(w[3]) + " in sentence " + str(w[4]) +
+                                                   " at position " + str(w[5]) + ".\n")
+                    output_label_str.set("The words in the group in all their places in all songs:")
 
         # Page definitions #
         home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
@@ -388,8 +393,8 @@ class ShowGroupPage(Frame):
         output_label_str = StringVar()
         output_label = Label(self, textvariable=output_label_str).grid(row=2, column=1)
         # words in the group preview
-        group_words_preview = Text(self, height=15, width=70)
-        group_words_preview.grid(row=7, column=2)
+        group_words_preview = Text(self, height=20, width=70)
+        group_words_preview.grid(row=7, column=1)
 
 
 app = App()
