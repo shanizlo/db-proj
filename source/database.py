@@ -204,9 +204,9 @@ def search_word_id_by_position(songId: str, verseNum: int, sentenceNum: int, wor
 
 
 def get_song_definition_from_id(song_id: str):
-    with conneciton:
+    with connection:
         cursor.execute("SELECT title, author FROM songs WHERE song_id = :song_id", {'song_id': song_id})
-        return cursor.fetchone()[0]
+        return cursor.fetchone()
 
 
 def get_words_in_line(song_id: str, verse: int, line: int):
