@@ -255,6 +255,29 @@ def all_words_in_group(groupId: int):
         cursor.execute("SELECT word_id FROM wordsInGroup WHERE group_id = :groupId", {'groupId': groupId})
         return cursor.fetchall()
 
+def create_phrase(phrase_name: str):
+    try:
+        with connection:
+            cursor.execute("INSERT INTO phrases VALUES (:phrase_id, :phrase_name) returning phrase_id;",
+                           {'phrase_id': None, 'phrase_name': phrase_name})
+            # In case phrase with this name already exists
+            return cursor.fetchone()[0]
+
+    except sqlite3.Error as err:
+        return err
+
+
+def add_word_to_phrase(phrase_id: int, word_id : int, word_position: int):
+    with connection:
+        cursor.execute("INSERT INTO wordsInPhrase VALUES (:phrase_id, :word_id, :word_position)",
+                       {'phrase_id': phrase_id, 'word_id': word_id, 'word_position': word_position})
+
+
+def get_phrase(phrase_id: int):
+    with connection:
+        cursor.execute("SELECT word_id, word_position FROM wordsInPhrase WHERE phrase_id = :phrase_id", {'phrase_id': phrase_id})
+        return cursor.fetchall()
+
 # Function for debugging, nor for functionality
 def getAllSongEntries():
     with connection:
@@ -272,11 +295,6 @@ def getfVersesNumsInSong():
     with connection:
         cursor.execute("SELECT verse_num FROM contains WHERE song_id = 1 ORDER BY verse_num DESC;")
         return cursor.fetchall()
-
-#  TODO: add create phrase
-
-# TODO: add words to phrase
-
 
 
 connection.commit()
