@@ -153,3 +153,14 @@ def Get_All_Indices_From_Words_In_Group(name: str):
                         word_formatted.append([song_definition[0], song_definition[1], search_word_by_id(w_id), r[0], r[1], r[2]])
 
             return word_formatted
+
+
+def From_UI_Into_Phrase(name: str, words):
+    new_phrase_id = create_phrase(name)
+    if not isinstance(new_phrase_id, int):  # meaning creating the phrase failed - a phrase with this name already exists
+        return False
+    else:
+        for i in range(len(words)):
+            w_id = get_id_from_word(words[i])
+            add_word_to_phrase(new_phrase_id, w_id, i + 1)
+        return True

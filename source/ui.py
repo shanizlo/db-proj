@@ -473,8 +473,14 @@ class PhraseFromDropdown(Frame):
                 self.song_words.insert(END, w)
 
     def phrase_ui_into_db(self):
-        # TODO: make this work
-        pass
+        if (not stringOk(self.phrase_name_str.get())) or self.d_chosen_words.size() == 0:
+            self.input_checker_text.set("Please enter valid phrase name and choose at least one word.")
+        else:
+            words = [self.d_chosen_words.get(i) for i in range(self.d_chosen_words.size())]
+            if From_UI_Into_Phrase(self.phrase_name_str.get().lower(), words):
+                self.input_checker_text.set("Inserted the words successfully into a new phrase, namely")
+            else:
+                self.input_checker_text.set("Phrase with this name already exists and hence nothing was saved.")
 
 
 app = App()
