@@ -424,7 +424,7 @@ class PhraseFromDropdown(Frame):
         # all that has to do with the words of song that is inputted from the user #
         self.find_song_words_btn = Button(self, text="Find song words", command=self.get_words_from_input).grid(row=3, column=1)
         self.song_word_label = Label(self, text="Words of song:").grid(row=4, column=0)
-        self.song_words = Listbox(self, selectmode="multiple")
+        self.song_words = Listbox(self)
         self.song_words.grid(row=5, column=0)
 
         self.add_btn = Button(self, text="Add chosen words", command=self.add_words_to_phrase).grid(row=6, column=0)
