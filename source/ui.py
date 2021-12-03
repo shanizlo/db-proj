@@ -15,7 +15,7 @@ class App(Tk):
 
         #  Important when adding a frame
         for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext, GroupPage
-                  , ShowGroupPage, PhraseFromDropdown):
+                  , ShowGroupPage, PhraseFromDropdown, PhraseFromText):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -38,8 +38,9 @@ class HomePage(Frame):
         word_context_btn = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
         add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=2)
         group_words_btn = Button(self, text="Show words in group", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=2, column=3)
-        phrase_from_dropdown_btn = Button(self, text="Make phrase", command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=3, column=1
-                                                                                                                                    )
+        phrase_from_dropdown_btn = Button(self, text="Make phrase", command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=3, column=1)
+        phrase_from_text_btn = Button(self, text="Phrase from text", command=lambda: controller.show_frame(PhraseFromText)).grid(row=3, column=2)
+
 # TODO: add printing error message
 class UploadSongPage(Frame):
     def __init__(self, parent, controller):
@@ -482,6 +483,14 @@ class PhraseFromDropdown(Frame):
             else:
                 self.input_checker_text.set("Phrase with this name already exists and hence nothing was saved.")
 
+class PhraseFromText(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        # Page definitions #
+        self.home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+        self.page_title_label = Label(self,
+                                      text="Enter song details to show phrase inside song text.").grid(
+            row=0, column=1)
 
 app = App()
 app.title("Welcome to Songs Database")
