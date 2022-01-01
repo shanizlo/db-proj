@@ -164,3 +164,21 @@ def From_UI_Into_Phrase(name: str, words):
             w_id = get_id_from_word(words[i])
             add_word_to_phrase(new_phrase_id, w_id, i + 1)
         return True
+
+def getAllwordsInDbAscAz():
+    found_words = getAllWordsInDBAZ()
+    display_words_list = []
+    for w in found_words:
+        display_words_list.append(w[0])
+    # display_words_list.sort()
+    display_words_as_text = "\n".join(display_words_list)
+    return display_words_as_text
+
+def getAllwordsInDbDescCount():
+    found_words = getAllWordsInDBCount()
+    display_words_list = []
+    for w in found_words:
+        word_plus_count = f"{w[0]} (count: {w[1]})"
+        display_words_list.append(word_plus_count)
+    display_words_as_text = "\n\n".join(display_words_list)
+    return display_words_as_text

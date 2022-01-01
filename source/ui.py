@@ -16,7 +16,7 @@ class App(Tk):
 
         #  Important when adding a frame
         for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext, GroupPage
-                  , ShowGroupPage, PhraseFromDropdown, UploadDatasetPage):
+                  , ShowGroupPage, PhraseFromDropdown, UploadDatasetPage, ShowAllWords):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -33,14 +33,15 @@ class HomePage(Frame):
         Frame.__init__(self, parent)
 
         page_upload_btn = Button(self, text="Upload Song", command=lambda: controller.show_frame(UploadSongPage)).grid(row=1, column=1)
-        page_show_words_btn = Button(self, text="Show Words in Song", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=2)
-        page_upload_btn = Button(self, text="Statistics", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=3)
+        page_show_words_btn = Button(self, text="Show Words in Song", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=3)
+        page_upload_btn = Button(self, text="Statistics", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=5)
         find_word_btn = Button(self, text="Find Word", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
         word_context_btn = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
-        add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=2)
-        group_words_btn = Button(self, text="Show words in group", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=2, column=3)
+        add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=3)
+        group_words_btn = Button(self, text="Show words in group", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=2, column=5)
         phrase_from_dropdown_btn = Button(self, text="Make phrase", command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=3, column=1)
         page_upload_csv_btn = Button(self, text="Upload songs dataset", command=lambda: controller.show_frame(UploadDatasetPage)).grid(row=3, column=1)
+        page_show_all_words_in_db = Button(self, text="Show all Words in DB",command=lambda: controller.show_frame(ShowAllWords)).grid(row=3, column=3)
 
 # TODO: add printing error message
 class UploadSongPage(Frame):
@@ -97,8 +98,6 @@ class UploadSongPage(Frame):
         save_button = Button(self, text="Save song", command=submit_values).grid(row=11, column=2)
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
-
-
 class UploadDatasetPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -136,7 +135,6 @@ class UploadDatasetPage(Frame):
 
         filename_text.insert(END, self.dataset_file.name)
         print(self.dataset_file.name)
-
 
 class StatisticsPage(Frame):
     def __init__(self, parent, controller):
@@ -211,6 +209,33 @@ class ShowWordsInSongPage(Frame):
         song_words = SearchSongWords(author, title)
         self.song_words_preview.insert(END, song_words)
 
+class ShowAllWords(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        page_title_label = Label(self, text="Show All Words in DB").grid(row=0, column=2)
+        home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+
+        show_button = Button(self, text="Show words sorted A-Z", command=self.search_all_words_asc_az).grid(row=3, column=2)
+        show_button = Button(self, text="Show words sorted by count of appearence", command=self.search_all_words_desc_count).grid(row=3, column=5)
+
+        self.all_words_preview_az = Text(self, height=60, width=30)
+        self.all_words_preview_az.grid(row=7, column=2)
+
+        self.all_words_preview_count = Text(self, height=60, width=30)
+        self.all_words_preview_count.grid(row=7, column=5)
+
+    def search_all_words_asc_az(self):
+        self.all_words_preview_az.delete("1.0", "end")
+        print("searching for all words")
+        all_words = getAllwordsInDbAscAz()
+        self.all_words_preview_az.insert(END, all_words)
+
+    def search_all_words_desc_count(self):
+        self.all_words_preview_count.delete("1.0", "end")
+        print("searching for all words")
+        all_words = getAllwordsInDbDescCount()
+        self.all_words_preview_count.insert(END, all_words)
 
 class ShowWordByPlace(Frame):
     def __init__(self, parent, controller):
