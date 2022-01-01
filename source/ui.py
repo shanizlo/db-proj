@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from helpers_db import *
+import csv
 
 class App(Tk):
     def __init__(self, *args, **kwargs):
@@ -15,7 +16,7 @@ class App(Tk):
 
         #  Important when adding a frame
         for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext, GroupPage
-                  , ShowGroupPage, PhraseFromDropdown):
+                  , ShowGroupPage, PhraseFromDropdown, UploadDatasetPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -38,8 +39,9 @@ class HomePage(Frame):
         word_context_btn = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
         add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=2)
         group_words_btn = Button(self, text="Show words in group", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=2, column=3)
-        phrase_from_dropdown_btn = Button(self, text="Make phrase", command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=3, column=1
-                                                                                                                                    )
+        phrase_from_dropdown_btn = Button(self, text="Make phrase", command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=3, column=1)
+        page_upload_csv_btn = Button(self, text="Upload songs dataset", command=lambda: controller.show_frame(UploadDatasetPage)).grid(row=3, column=1)
+
 # TODO: add printing error message
 class UploadSongPage(Frame):
     def __init__(self, parent, controller):
@@ -94,6 +96,46 @@ class UploadSongPage(Frame):
         open_file_button = Button(self, text="Browse file...", command=open_file).grid(row=6, column=2)
         save_button = Button(self, text="Save song", command=submit_values).grid(row=11, column=2)
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+
+
+
+class UploadDatasetPage(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        page_title_label = Label(self, text="Upload Csv").grid(row=0, column=2)
+        filename_label = Label(self, text="CSV File:").grid(row=5, column=1)
+        song_value = StringVar()
+        open_file_button = Button(self, text="Browse file...", command=self.open_file).grid(row=6, column=2)
+        save_button = Button(self, text="Save dataset", command=self.submit_values).grid(row=11, column=2)
+        home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+
+    def submit_values(self):
+        # file = self.dataset_file.read
+        # csv_reader = csv.reader(file)
+        # print("ok")
+        file = open(self.dataset_file.name)
+        csvreader = csv.reader(file)
+        header = next(csvreader)
+        print(header)
+        for row in csvreader:
+            author = row[0]
+            title = row[1]
+            lyrics = row[2]
+            insert_into_database(title, author, "", "", lyrics)
+        file.close()
+
+
+    def open_file(self):
+        self.dataset_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a csv file with song lyrics dataset",
+                                           filetypes=[("csv files", "*.csv")])
+        filename_text = Text(self, height=3, width=70)
+        filename_text.grid(row=5, column=2)
+
+        filename_text.delete("1.0", "end")
+
+        filename_text.insert(END, self.dataset_file.name)
+        print(self.dataset_file.name)
 
 
 class StatisticsPage(Frame):
