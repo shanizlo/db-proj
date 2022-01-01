@@ -1,7 +1,14 @@
 from tkinter import *
 from tkinter import filedialog
+
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+from pandas import DataFrame
+
 from helpers_db import *
 import csv
+import numpy as np
+import matplotlib.pyplot as plt
 
 class App(Tk):
     def __init__(self, *args, **kwargs):
@@ -47,6 +54,22 @@ class HomePage(Frame):
         page_stats_btn = Button(self, text="Statistics", width=b_width, command=lambda: controller.show_frame(StatisticsPage)).grid(row=5, column=1, padx=b_padx, pady=b_pady)
 
         page_title_label = Label(self, text="Project by Shani Zlotnik & Daniel Meriaz").grid(row=1, column=2, padx=10, pady=10)
+
+        data1 = {'The song': ['Hello', 'Bohemian Rhapsody', 'Lemon tree', 'Lady Marmelade', 'I am Woman1', 'Hello1', 'Bohemian Rhapsody1', 'Lemon tree1', 'Lady Marmelad3e', 'I am Woman3'],
+                 'Num of words': [45000, 42000, 52000, 49000, 47000, 45000, 42000, 52000, 49000, 47000]
+                 }
+        df1 = DataFrame(data1, columns=['The song', 'Num of words'])
+
+        figure1 = plt.Figure(figsize=(8, 8), dpi=80)
+        plt.tight_layout()
+        figure1.autofmt_xdate(rotation=45)
+        ax1 = figure1.add_subplot(111)
+        bar1 = FigureCanvasTkAgg(figure1, self)
+        bar1.get_tk_widget().grid(row=73, columnspan=4, sticky=W)
+        df1 = df1[['The song', 'Num of words']].groupby('The song').sum()
+        df1.plot(kind='bar', legend=True, ax=ax1)
+        ax1.set_title('Words per song - top 10')
+
 
 # TODO: add printing error message
 class UploadSongPage(Frame):
