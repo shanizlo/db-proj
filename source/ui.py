@@ -8,7 +8,7 @@ class App(Tk):
         Tk.__init__(self, *args, **kwargs)
         # Setup Frame
         container = Frame(self)
-        container.pack(side="top", fill="both", expand=True)
+        container.pack(side="top", fill="both", expand=True, padx=10, pady=10)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
@@ -31,17 +31,22 @@ class App(Tk):
 class HomePage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
+        b_width = 15
+        b_padx = 2
+        b_pady = 4
 
-        page_upload_btn = Button(self, text="Upload Song", command=lambda: controller.show_frame(UploadSongPage)).grid(row=1, column=1)
-        page_show_words_btn = Button(self, text="Show Words in Song", command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=1, column=3)
-        page_upload_btn = Button(self, text="Statistics", command=lambda: controller.show_frame(StatisticsPage)).grid(row=1, column=5)
-        find_word_btn = Button(self, text="Find Word", command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=1, column=5)
-        word_context_btn = Button(self, text="Show Context", command=lambda: controller.show_frame(ShowContext)).grid(row=2, column=1)
-        add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=3)
-        group_words_btn = Button(self, text="Show words in group", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=2, column=5)
-        phrase_from_dropdown_btn = Button(self, text="Make phrase", command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=3, column=1)
-        page_upload_csv_btn = Button(self, text="Upload songs dataset", command=lambda: controller.show_frame(UploadDatasetPage)).grid(row=3, column=1)
-        page_show_all_words_in_db = Button(self, text="Show all Words in DB",command=lambda: controller.show_frame(ShowAllWords)).grid(row=3, column=3)
+        page_upload_btn = Button(self, text="Upload Song", width=b_width, command=lambda: controller.show_frame(UploadSongPage)).grid(row=2, column=1, padx=b_padx, pady=b_pady)
+        page_upload_csv_btn = Button(self, text="Upload songs dataset", width=b_width, command=lambda: controller.show_frame(UploadDatasetPage)).grid(row=2, column=2, padx=b_padx, pady=b_pady)
+        page_show_all_words_in_db = Button(self, text="Show all Words in DB", width=b_width,command=lambda: controller.show_frame(ShowAllWords)).grid(row=2, column=3, padx=b_padx, pady=b_pady)
+        page_show_words_btn = Button(self, text="Show Words in Song", width=b_width, command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=3, column=1, padx=b_padx, pady=b_pady)
+        find_word_btn = Button(self, text="Find Word", width=b_width, command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=3, column=2, padx=b_padx, pady=b_pady)
+        word_context_btn = Button(self, text="Show Context", width=b_width, command=lambda: controller.show_frame(ShowContext)).grid(row=3, column=3, padx=b_padx, pady=b_pady)
+        add_group_btn = Button(self, text="Add a/to group", width=b_width, command=lambda: controller.show_frame(GroupPage)).grid(row=4, column=1, padx=b_padx, pady=b_pady)
+        group_words_btn = Button(self, text="Show words in group", width=b_width, command=lambda: controller.show_frame(ShowGroupPage)).grid(row=4, column=2, padx=b_padx, pady=b_pady)
+        phrase_from_dropdown_btn = Button(self, text="Make phrase", width=b_width, command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=4, column=3, padx=b_padx, pady=b_pady)
+        page_stats_btn = Button(self, text="Statistics", width=b_width, command=lambda: controller.show_frame(StatisticsPage)).grid(row=5, column=1, padx=b_padx, pady=b_pady)
+
+        page_title_label = Label(self, text="Project by Shani Zlotnik & Daniel Meriaz").grid(row=1, column=2, padx=10, pady=10)
 
 # TODO: add printing error message
 class UploadSongPage(Frame):
