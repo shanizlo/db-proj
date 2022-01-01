@@ -297,6 +297,17 @@ def getfVersesNumsInSong():
         cursor.execute("SELECT verse_num FROM contains WHERE song_id = 1 ORDER BY verse_num DESC;")
         return cursor.fetchall()
 
+# Get all words values
+def getAllWordsInDBAZ():
+    with connection:
+        cursor.execute("SELECT word_value from words ORDER BY word_value ASC;")
+        return cursor.fetchall()
+
+# Get all words and their count
+def getAllWordsInDBCount():
+    with connection:
+        cursor.execute("select words.word_value, count(c.word_id) as count from words inner join contains c on words.word_id = c.word_id group by words.word_id order by count DESC ;")
+        return cursor.fetchall()
 
 connection.commit()
 # connection.close()
