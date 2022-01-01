@@ -3,7 +3,8 @@ import sqlite3
 from text_parser import parse
 from entities import *
 
-connection = sqlite3.connect(":memory:")
+# connection = sqlite3.connect(":memory:")
+connection = sqlite3.connect("songs.db")
 cursor = connection.cursor()
 
 sql_file = open("init_script.sql")
