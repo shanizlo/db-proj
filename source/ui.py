@@ -55,6 +55,7 @@ class HomePage(Frame):
 
         page_title_label = Label(self, text="Project by Shani Zlotnik & Daniel Meriaz").grid(row=1, column=2, padx=10, pady=10)
 
+        # TODO: add real data
         data1 = {'The song': ['Hello', 'Bohemian Rhapsody', 'Lemon tree', 'Lady Marmelade', 'I am Woman1', 'Hello1', 'Bohemian Rhapsody1', 'Lemon tree1', 'Lady Marmelad3e', 'I am Woman3'],
                  'Num of words': [45000, 42000, 52000, 49000, 47000, 45000, 42000, 52000, 49000, 47000]
                  }
