@@ -314,5 +314,11 @@ def getTop10Songs():
         cursor.execute("SELECT songs.title, songs.author, COUNT(c.song_id) AS COUNT FROM songs INNER JOIN contains c ON songs.song_id = c.song_id GROUP BY songs.song_id ORDER BY COUNT DESC LIMIT 10;")
         return cursor.fetchall()
 
+def getTop10WordsBySongId(song_id: str):
+    with connection:
+        cursor.execute("SELECT words.word_value, COUNT(c.word_id) AS COUNT FROM words INNER JOIN contains c ON words.word_id = c.word_id WHERE c.song_id = :song_id GROUP BY words.word_id ORDER BY COUNT DESC LIMIT 10;",
+                       {'song_id': song_id})
+        return cursor.fetchall()
+
 connection.commit()
 # connection.close()

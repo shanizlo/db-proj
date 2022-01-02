@@ -199,13 +199,36 @@ class StatisticsPage(Frame):
 
         output_message_label = Label(self, textvariable=output_message).grid(row=6, column=2)
         def show_statistics():
-            if stringOk(author_value.get()) and stringOk(title_value.get()):
-                output = StatisticsOutput(author_value.get(), title_value.get())
+            author = author_value.get()
+            title = title_value.get()
+            if stringOk(author) and stringOk(title):
+                output = StatisticsOutput(author, title)
                 if output is not None:  # song found
                     num_words_in_song_value.set(output[0])
                     avg_chars_in_sentence_value.set(output[1])
                     avg_chars_in_verse_value.set(output[2])
+                    song_id = output[3]
                     output_message.set("Found your wanted song.")
+
+                    # Graph
+                    top10 = getTop10Words(song_id)
+                    top10songs = top10[0]
+                    top10count = top10[1]
+
+                    data1 = {'words': top10songs, 'Num of words': top10count}
+                    df1 = DataFrame(data1, columns=['Num of words', 'words'])
+
+                    figure1 = plt.Figure(figsize=(8, 8), dpi=80)
+                    plt.tight_layout()
+                    plt.rcParams["figure.autolayout"] = True
+                    figure1.autofmt_xdate(rotation=45)
+                    ax1 = figure1.add_subplot(111)
+                    bar1 = FigureCanvasTkAgg(figure1, self)
+                    bar1.get_tk_widget().grid(row=73, columnspan=4)
+                    df1 = df1.sort_values('Num of words')
+                    df1.plot('words', kind='bar', legend=True, ax=ax1, color='green')
+                    ax1.set_title('Words per this song - top 10')
+
                 else:  # song not found
                     output_message.set("Unable to find the wanted song.")
             else:  # input was bad

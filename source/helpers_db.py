@@ -105,7 +105,7 @@ def StatisticsOutput(author: str, title: str):
             if not (w[2], w[3]) in sentences_seen_thus_far:
                 number_of_sentences += 1
                 sentences_seen_thus_far.append((w[2], w[3]))
-        return [number_of_words, number_of_characters / number_of_sentences, number_of_characters / number_of_verses]
+        return [number_of_words, int(number_of_characters / number_of_sentences), int(number_of_characters / number_of_verses), song_id]
 
     else:
         return None
@@ -191,3 +191,12 @@ def getTop10SongsAndValues():
         songs_arr.append(f"{s[0]}\n(by {s[1]})")
         count_words_arr.append(s[2])
     return songs_arr, count_words_arr
+
+def getTop10Words(songId: str):
+    words_found = getTop10WordsBySongId(songId)
+    words_arr = []
+    count_words_arr = []
+    for w in words_found:
+        words_arr.append(w[0])
+        count_words_arr.append(w[1])
+    return words_arr, count_words_arr
