@@ -182,3 +182,12 @@ def getAllwordsInDbDescCount():
         display_words_list.append(word_plus_count)
     display_words_as_text = "\n\n".join(display_words_list)
     return display_words_as_text
+
+def getTop10SongsAndValues():
+    songs_found = getTop10Songs()
+    songs_arr = []
+    count_words_arr = []
+    for s in songs_found:
+        songs_arr.append(f"{s[0]}\n(by {s[1]})")
+        count_words_arr.append(s[2])
+    return songs_arr, count_words_arr
