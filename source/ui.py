@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import filedialog
+from tkinter import filedialog, Canvas
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -356,7 +356,7 @@ class ShowContext(Frame):
 
         self.search_button = Button(self, text="Search song", command=self.search_song_words_desc).grid(row=4, column=2)
 
-        self.context_preview = Text(self, height=15, width=70)
+        self.context_preview = Text(self, height=30, width=100)
         self.context_preview.grid(row=11, column=2)
 
         self.options_words = StringVar()
