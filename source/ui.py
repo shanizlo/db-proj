@@ -55,20 +55,23 @@ class HomePage(Frame):
 
         page_title_label = Label(self, text="Project by Shani Zlotnik & Daniel Meriaz").grid(row=1, column=2, padx=10, pady=10)
 
-        # TODO: add real data
-        data1 = {'The song': ['Hello', 'Bohemian Rhapsody', 'Lemon tree', 'Lady Marmelade', 'I am Woman1', 'Hello1', 'Bohemian Rhapsody1', 'Lemon tree1', 'Lady Marmelad3e', 'I am Woman3'],
-                 'Num of words': [45000, 42000, 52000, 49000, 47000, 45000, 42000, 52000, 49000, 47000]
-                 }
-        df1 = DataFrame(data1, columns=['The song', 'Num of words'])
+        # Graph
+        top10 = getTop10SongsAndValues()
+        top10songs = top10[0]
+        top10count = top10[1]
 
-        figure1 = plt.Figure(figsize=(8, 8), dpi=80)
+        data1 = {'The song': top10songs, 'Num of words': top10count}
+        df1 = DataFrame(data1, columns=['Num of words', 'The song'])
+
+        figure1 = plt.Figure(figsize=(10, 11), dpi=80)
         plt.tight_layout()
+        plt.rcParams["figure.autolayout"] = True
         figure1.autofmt_xdate(rotation=45)
         ax1 = figure1.add_subplot(111)
         bar1 = FigureCanvasTkAgg(figure1, self)
-        bar1.get_tk_widget().grid(row=73, columnspan=4, sticky=W)
-        df1 = df1[['The song', 'Num of words']].groupby('The song').sum()
-        df1.plot(kind='bar', legend=True, ax=ax1)
+        bar1.get_tk_widget().grid(row=73, columnspan=4)
+        df1 = df1.sort_values('Num of words')
+        df1.plot('The song', kind='bar', legend=True, ax=ax1, color='orange')
         ax1.set_title('Words per song - top 10')
 
 
@@ -581,5 +584,6 @@ class PhraseFromDropdown(Frame):
 
 app = App()
 app.title("Welcome to Songs Database")
-app.geometry('1000x700')
+app.geometry('900x900')
+# app.geometry('1000x700')
 app.mainloop()

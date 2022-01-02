@@ -306,7 +306,12 @@ def getAllWordsInDBAZ():
 # Get all words and their count
 def getAllWordsInDBCount():
     with connection:
-        cursor.execute("select words.word_value, count(c.word_id) as count from words inner join contains c on words.word_id = c.word_id group by words.word_id order by count DESC ;")
+        cursor.execute("SELECT words.word_value, COUNT(c.word_id) AS COUNT FROM words INNER JOIN contains c ON words.word_id = c.word_id GROUP BY words.word_id ORDER BY COUNT DESC ;")
+        return cursor.fetchall()
+
+def getTop10Songs():
+    with connection:
+        cursor.execute("SELECT songs.title, songs.author, COUNT(c.song_id) AS COUNT FROM songs INNER JOIN contains c ON songs.song_id = c.song_id GROUP BY songs.song_id ORDER BY COUNT DESC LIMIT 10;")
         return cursor.fetchall()
 
 connection.commit()
