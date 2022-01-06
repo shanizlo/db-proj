@@ -23,7 +23,7 @@ class App(Tk):
 
         #  Important when adding a frame
         for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext, GroupPage
-                  , ShowGroupPage, PhraseFromDropdown, UploadDatasetPage, ShowAllWords):
+                  , ShowGroupPage, PhraseFromDropdown, UploadDatasetPage, ShowAllWords, ShowAllSongs):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -41,19 +41,33 @@ class HomePage(Frame):
         b_width = 15
         b_padx = 2
         b_pady = 4
+        first_row = 2
+        second_row = 3
+        third_row = 4
+        fourth_row = 5
+        fifth_row = 6
+        six_row = 7
 
-        page_upload_btn = Button(self, text="Upload Song", width=b_width, command=lambda: controller.show_frame(UploadSongPage)).grid(row=2, column=1, padx=b_padx, pady=b_pady)
-        page_upload_csv_btn = Button(self, text="Upload songs dataset", width=b_width, command=lambda: controller.show_frame(UploadDatasetPage)).grid(row=2, column=2, padx=b_padx, pady=b_pady)
-        page_show_all_words_in_db = Button(self, text="Show all Words in DB", width=b_width,command=lambda: controller.show_frame(ShowAllWords)).grid(row=2, column=3, padx=b_padx, pady=b_pady)
-        page_show_words_btn = Button(self, text="Show Words in Song", width=b_width, command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=3, column=1, padx=b_padx, pady=b_pady)
-        find_word_btn = Button(self, text="Find Word", width=b_width, command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=3, column=2, padx=b_padx, pady=b_pady)
-        word_context_btn = Button(self, text="Show Context", width=b_width, command=lambda: controller.show_frame(ShowContext)).grid(row=3, column=3, padx=b_padx, pady=b_pady)
-        add_group_btn = Button(self, text="Add a/to group", width=b_width, command=lambda: controller.show_frame(GroupPage)).grid(row=4, column=1, padx=b_padx, pady=b_pady)
-        group_words_btn = Button(self, text="Show words in group", width=b_width, command=lambda: controller.show_frame(ShowGroupPage)).grid(row=4, column=2, padx=b_padx, pady=b_pady)
-        phrase_from_dropdown_btn = Button(self, text="Make phrase", width=b_width, command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=4, column=3, padx=b_padx, pady=b_pady)
-        page_stats_btn = Button(self, text="Statistics", width=b_width, command=lambda: controller.show_frame(StatisticsPage)).grid(row=5, column=1, padx=b_padx, pady=b_pady)
+        page_title_label = Label(self, text="Project by Shani Zlotnik & Daniel Meriaz", fg='orange').grid(row=first_row, column=2, padx=10, pady=10)
+        total_songs_num_label = Label(self, text=f"Total number of songs in DB: {getCountOfAllSongs()[0]}", background='orange', width=25, fg='white').grid(row=second_row, column=1, padx=b_padx, pady=b_pady)
+        total_authors_num_label = Label(self, text=f"Total number of authors in DB: {getCountOfAllAuthors()[0]}", background='orange', width=25, fg='white').grid(row=second_row, column=2, padx=b_padx, pady=b_pady)
+        total_words_num_label = Label(self, text=f"Total number of words in DB: {getCountOfAllWords()[0]}", background='orange', width=25, fg='white').grid(row=second_row, column=3, padx=b_padx, pady=b_pady)
 
-        page_title_label = Label(self, text="Project by Shani Zlotnik & Daniel Meriaz").grid(row=1, column=2, padx=10, pady=10)
+        page_upload_btn = Button(self, text="Upload Song", width=b_width, command=lambda: controller.show_frame(UploadSongPage)).grid(row=third_row, column=1, padx=b_padx, pady=b_pady)
+        page_upload_csv_btn = Button(self, text="Upload songs dataset", width=b_width, command=lambda: controller.show_frame(UploadDatasetPage)).grid(row=third_row, column=2, padx=b_padx, pady=b_pady)
+        page_show_all_words_in_db = Button(self, text="Show all Words in DB", width=b_width,command=lambda: controller.show_frame(ShowAllWords)).grid(row=third_row, column=3, padx=b_padx, pady=b_pady)
+
+        page_show_words_btn = Button(self, text="Show Words in Song", width=b_width, command=lambda: controller.show_frame(ShowWordsInSongPage)).grid(row=fourth_row, column=1, padx=b_padx, pady=b_pady)
+        find_word_btn = Button(self, text="Find Word", width=b_width, command=lambda: controller.show_frame(ShowWordByPlace)).grid(row=fourth_row, column=2, padx=b_padx, pady=b_pady)
+        word_context_btn = Button(self, text="Show Context", width=b_width, command=lambda: controller.show_frame(ShowContext)).grid(row=fourth_row, column=3, padx=b_padx, pady=b_pady)
+
+        add_group_btn = Button(self, text="Add a/to group", width=b_width, command=lambda: controller.show_frame(GroupPage)).grid(row=fifth_row, column=1, padx=b_padx, pady=b_pady)
+        group_words_btn = Button(self, text="Show words in group", width=b_width, command=lambda: controller.show_frame(ShowGroupPage)).grid(row=fifth_row, column=2, padx=b_padx, pady=b_pady)
+        phrase_from_dropdown_btn = Button(self, text="Make phrase", width=b_width, command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=fifth_row, column=3, padx=b_padx, pady=b_pady)
+
+        page_stats_btn = Button(self, text="Statistics", width=b_width, command=lambda: controller.show_frame(StatisticsPage)).grid(row=six_row, column=1, padx=b_padx, pady=b_pady)
+        show_all_songds_btn = Button(self, text="Show all songs", width=b_width, command=lambda: controller.show_frame(ShowAllSongs)).grid(row=six_row, column=2, padx=b_padx, pady=b_pady)
+
 
         # Graph
         top10 = getTop10SongsAndValues()
@@ -291,6 +305,38 @@ class ShowAllWords(Frame):
         print("searching for all words")
         all_words = getAllwordsInDbDescCount()
         self.all_words_preview_count.insert(END, all_words)
+
+class ShowAllSongs(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        page_title_label = Label(self, text="Show All Songs in DB").grid(row=0, column=2)
+        home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+
+        show_button = Button(self, text="Show songs sorted by title", command=self.search_all_songs, width=25).grid(row=3, column=2)
+        show_button = Button(self, text="Show songs sorted by author name", command=self.search_all_songs_by_author, width=25).grid(row=4, column=2)
+        show_button = Button(self, text="Show songs sorted by count of words", command=self.search_all_songs_by_count, width=25).grid(row=5, column=2)
+
+        self.all_songs_preview = Text(self, height=60, width=80)
+        self.all_songs_preview.grid(row=8, column=2, pady=5)
+
+    def search_all_songs(self):
+        self.all_songs_preview.delete("1.0", "end")
+        print("searching for all songs")
+        all_songs = getAllSongsInDbByTitle()
+        self.all_songs_preview.insert(END, all_songs)
+
+    def search_all_songs_by_author(self):
+        self.all_songs_preview.delete("1.0", "end")
+        print("searching for all songs")
+        all_songs = getAllSongsByAuthor()
+        self.all_songs_preview.insert(END, all_songs)
+
+    def search_all_songs_by_count(self):
+        self.all_songs_preview.delete("1.0", "end")
+        print("searching for all songs")
+        all_songs = getAllSongsByCount()
+        self.all_songs_preview.insert(END, all_songs)
 
 class ShowWordByPlace(Frame):
     def __init__(self, parent, controller):
