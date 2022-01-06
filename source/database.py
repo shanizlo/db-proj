@@ -320,5 +320,37 @@ def getTop10WordsBySongId(song_id: str):
                        {'song_id': song_id})
         return cursor.fetchall()
 
+# Get all songs sorted by title
+def getAllSongsInDBByTitle():
+    with connection:
+        cursor.execute("SELECT title, author from songs ORDER BY title ASC;")
+        return cursor.fetchall()
+
+# Get all songs sorted by author
+def getAllSongsInDBByAuthor():
+    with connection:
+        cursor.execute("SELECT author, title from songs ORDER BY author ASC;")
+        return cursor.fetchall()
+
+def getAllSongsUnDBByCount():
+    with connection:
+        cursor.execute("SELECT COUNT(c.song_id) AS COUNT, songs.title, songs.author FROM songs INNER JOIN contains c ON songs.song_id = c.song_id GROUP BY songs.song_id ORDER BY COUNT DESC;")
+        return cursor.fetchall()
+
+def getCountOfAllSongs():
+    with connection:
+        cursor.execute("SELECT COUNT(*) FROM songs;")
+        return cursor.fetchone()
+
+def getCountOfAllAuthors():
+    with connection:
+        cursor.execute("SELECT count(DISTINCT author) FROM songs;")
+        return cursor.fetchone()
+
+def getCountOfAllWords():
+    with connection:
+        cursor.execute("SELECT COUNT(*) FROM words;")
+        return cursor.fetchone()
+
 connection.commit()
 # connection.close()

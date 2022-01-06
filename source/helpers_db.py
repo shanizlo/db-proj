@@ -200,3 +200,30 @@ def getTop10Words(songId: str):
         words_arr.append(w[0])
         count_words_arr.append(w[1])
     return words_arr, count_words_arr
+
+def getAllSongsInDbByTitle():
+    found_songs = getAllSongsInDBByTitle()
+    display_songs_list = []
+    for s in found_songs:
+        song_plus_author = f"\"{s[0]}\"  ,By {s[1]}"
+        display_songs_list.append(song_plus_author)
+    display_songs_as_text = "\n\n".join(display_songs_list)
+    return display_songs_as_text
+
+def getAllSongsByAuthor():
+    found_songs = getAllSongsInDBByAuthor()
+    display_songs_list = []
+    for s in found_songs:
+        song_plus_author = f"{s[0]}  \"{s[1]}\""
+        display_songs_list.append(song_plus_author)
+    display_songs_as_text = "\n\n".join(display_songs_list)
+    return display_songs_as_text
+
+def getAllSongsByCount():
+    found_songs = getAllSongsUnDBByCount()
+    display_songs_list = []
+    for s in found_songs:
+        song_plus_author = f"({s[0]})  \"{s[1]}\"  ,By {s[2]}"
+        display_songs_list.append(song_plus_author)
+    display_songs_as_text = "\n\n".join(display_songs_list)
+    return display_songs_as_text
