@@ -2,12 +2,10 @@ from tkinter import *
 from tkinter import filedialog, Canvas
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
 from pandas import DataFrame
 
 from helpers_db import *
 import csv
-import numpy as np
 import matplotlib.pyplot as plt
 
 class App(Tk):
@@ -34,6 +32,9 @@ class App(Tk):
         frame = self.frames[context]
         frame.tkraise()
 
+        if context == HomePage:
+            frame.on_focus()
+
 
 class HomePage(Frame):
     def __init__(self, parent, controller):
@@ -49,9 +50,12 @@ class HomePage(Frame):
         six_row = 7
 
         page_title_label = Label(self, text="Project by Shani Zlotnik & Daniel Meriaz", fg='orange').grid(row=first_row, column=2, padx=10, pady=10)
-        total_songs_num_label = Label(self, text=f"Total number of songs in DB: {getCountOfAllSongs()[0]}", background='orange', width=25, fg='white').grid(row=second_row, column=1, padx=b_padx, pady=b_pady)
-        total_authors_num_label = Label(self, text=f"Total number of authors in DB: {getCountOfAllAuthors()[0]}", background='orange', width=25, fg='white').grid(row=second_row, column=2, padx=b_padx, pady=b_pady)
-        total_words_num_label = Label(self, text=f"Total number of words in DB: {getCountOfAllWords()[0]}", background='orange', width=25, fg='white').grid(row=second_row, column=3, padx=b_padx, pady=b_pady)
+        self.totalSongsText = StringVar()
+        self.totalAuthorsText = StringVar()
+        self.totalWordsText = StringVar()
+        self.total_songs_num_label = Label(self, textvariable=self.totalSongsText, background='orange', width=25, fg='white').grid(row=second_row, column=1, padx=b_padx, pady=b_pady)
+        total_authors_num_label = Label(self, textvariable=self.totalAuthorsText, background='orange', width=25, fg='white').grid(row=second_row, column=2, padx=b_padx, pady=b_pady)
+        total_words_num_label = Label(self, textvariable=self.totalWordsText, background='orange', width=25, fg='white').grid(row=second_row, column=3, padx=b_padx, pady=b_pady)
 
         page_upload_btn = Button(self, text="Upload Song", width=b_width, command=lambda: controller.show_frame(UploadSongPage)).grid(row=third_row, column=1, padx=b_padx, pady=b_pady)
         page_upload_csv_btn = Button(self, text="Upload songs dataset", width=b_width, command=lambda: controller.show_frame(UploadDatasetPage)).grid(row=third_row, column=2, padx=b_padx, pady=b_pady)
@@ -68,7 +72,14 @@ class HomePage(Frame):
         page_stats_btn = Button(self, text="Statistics", width=b_width, command=lambda: controller.show_frame(StatisticsPage)).grid(row=six_row, column=1, padx=b_padx, pady=b_pady)
         show_all_songds_btn = Button(self, text="Show all songs", width=b_width, command=lambda: controller.show_frame(ShowAllSongs)).grid(row=six_row, column=2, padx=b_padx, pady=b_pady)
 
-        self.showGraph()
+    def on_focus(self):
+        global needRedrawHome
+        if needRedrawHome:
+            self.showGraph()
+            self.totalSongsText.set(f"Total number of songs in DB: {getCountOfAllSongs()[0]}")
+            self.totalAuthorsText.set(f"Total number of songs in DB: {getCountOfAllAuthors()[0]}")
+            self.totalWordsText.set(f"Total number of songs in DB: {getCountOfAllWords()[0]}")
+            needRedrawHome = False
 
     def showGraph(self):
         # Graph
@@ -104,8 +115,16 @@ class UploadSongPage(Frame):
             album_info = album_value.get()
             copyright_info = copyright_value.get()
             song_lyrics = song_text_preview.get("1.0", END)
-            insert_into_database(author_info, title_info, album_info, copyright_info, song_lyrics)
-            print('Submitted: Author: {}, title: {}, album: {}, copyright: {}, song lyrics: {}'.format(author_info, title_info, album_info, copyright_info, song_lyrics))
+            message = insert_into_database(author_info, title_info, album_info, copyright_info, song_lyrics)
+            global needRedrawHome
+            needRedrawHome = True
+            self.submittedMessage = StringVar()
+            messageLabel = Label(self, textvariable=self.submittedMessage, fg='green').grid(row=12, column=2, padx=10, pady=10)
+            if isinstance(message, int):
+                successMessage = Label(self, text=f"Your song is saved successfully! Song id is {message}", fg='green').grid(row=12, column=2, padx=10, pady=10)
+            else:
+                song_text_preview.delete("1.0", "end")
+                song_text_preview.insert(END, f"Error saving your song! {message}")
 
         def open_file():
             text_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a text file with song lyrics",
@@ -160,20 +179,22 @@ class UploadDatasetPage(Frame):
         home_button = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
 
     def submit_values(self):
-        # file = self.dataset_file.read
-        # csv_reader = csv.reader(file)
-        # print("ok")
+        global needRedrawHome
         file = open(self.dataset_file.name)
         csvreader = csv.reader(file)
         header = next(csvreader)
         print(header)
+        addedCounter = 0
         for row in csvreader:
             author = row[0]
             title = row[1]
             lyrics = row[2]
-            insert_into_database(title, author, "", "", lyrics)
+            if author and title and lyrics:
+                insert_into_database(title, author, "", "", lyrics)
+                addedCounter = addedCounter + 1
+        Label(self, text=f"Successfully submitted {addedCounter} songs to DB", fg='green').grid(row=10, column=2)
         file.close()
-
+        needRedrawHome = True
 
     def open_file(self):
         self.dataset_file = filedialog.askopenfile(initialdir="/gui/images", title="Select a csv file with song lyrics dataset",
@@ -654,7 +675,8 @@ class PhraseFromDropdown(Frame):
             else:
                 self.input_checker_text.set("Phrase with this name already exists and hence nothing was saved.")
 
-
+global needRedrawHome
+needRedrawHome = True
 app = App()
 app.title("Welcome to Songs Database")
 app.geometry('900x900')
