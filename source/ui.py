@@ -68,9 +68,13 @@ class HomePage(Frame):
         page_stats_btn = Button(self, text="Statistics", width=b_width, command=lambda: controller.show_frame(StatisticsPage)).grid(row=six_row, column=1, padx=b_padx, pady=b_pady)
         show_all_songds_btn = Button(self, text="Show all songs", width=b_width, command=lambda: controller.show_frame(ShowAllSongs)).grid(row=six_row, column=2, padx=b_padx, pady=b_pady)
 
+        self.showGraph()
 
+    def showGraph(self):
         # Graph
         top10 = getTop10SongsAndValues()
+        if top10 is None:
+            return
         top10songs = top10[0]
         top10count = top10[1]
 

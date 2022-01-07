@@ -185,6 +185,8 @@ def getAllwordsInDbDescCount():
 
 def getTop10SongsAndValues():
     songs_found = getTop10Songs()
+    if len(songs_found) < 1:
+        return None
     songs_arr = []
     count_words_arr = []
     for s in songs_found:
