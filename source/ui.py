@@ -190,7 +190,7 @@ class UploadDatasetPage(Frame):
             title = row[1]
             lyrics = row[2]
             if author and title and lyrics:
-                insert_into_database(title, author, "", "", lyrics)
+                insert_into_database(author, title, "", "", lyrics)
                 addedCounter = addedCounter + 1
         Label(self, text=f"Successfully submitted {addedCounter} songs to DB", fg='green').grid(row=10, column=2)
         file.close()
