@@ -77,8 +77,8 @@ class HomePage(Frame):
         if needRedrawHome:
             self.showGraph()
             self.totalSongsText.set(f"Total number of songs in DB: {getCountOfAllSongs()[0]}")
-            self.totalAuthorsText.set(f"Total number of songs in DB: {getCountOfAllAuthors()[0]}")
-            self.totalWordsText.set(f"Total number of songs in DB: {getCountOfAllWords()[0]}")
+            self.totalAuthorsText.set(f"Total number of authors in DB: {getCountOfAllAuthors()[0]}")
+            self.totalWordsText.set(f"Total number of words in DB: {getCountOfAllWords()[0]}")
             needRedrawHome = False
 
     def showGraph(self):
