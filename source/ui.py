@@ -619,17 +619,16 @@ class PhraseFromText(Frame):
         self.song_txt.grid(row=4, column=1)
         self.song_txt.config(state='disabled')
 
-
     def get_song_words(self):
         lyrics = Deparse(self.author_value.get().lower(), self.title_value.get().lower())
         self.song_txt.config(state='normal')
         self.song_txt.delete(1.0, END)
         if lyrics is not None:
             self.song_txt.insert(INSERT, lyrics)
-            self.song_txt.config(state='disabled')
         else:
             self.song_txt.insert(INSERT, "No such song was found or the input was bad.")
-            self.song_txt.config(state='disabled')
+        self.song_txt.config(state='disabled')
+
 
 class PhraseFromDropdown(Frame):
     def __init__(self, parent, controller):
