@@ -151,9 +151,9 @@ def getAllSongEntries():
         return cursor.fetchall()
 
 # Function for debugging, nor for functionality
-def getAllWordPositionsInSongId():
+def getAllWordPositionsInSong(song_id: int):
     with connection:
-        cursor.execute("SELECT * FROM contains WHERE song_id = 1;")
+        cursor.execute("SELECT verse_num, sentence_num, word_position, word_id FROM contains WHERE song_id = :song_id;", {'song_id': song_id})
         return cursor.fetchall()
 
 # Function for debugging, nor for functionality
@@ -283,12 +283,6 @@ def get_phrase(phrase_id: int):
 def getAllSongEntries():
     with connection:
         cursor.execute("SELECT * FROM songs;")
-        return cursor.fetchall()
-
-# Function for debugging, nor for functionality
-def getAllWordPositionsInSongId():
-    with connection:
-        cursor.execute("SELECT * FROM contains WHERE song_id = 1;")
         return cursor.fetchall()
 
 # Function for debugging, nor for functionality

@@ -21,7 +21,7 @@ class App(Tk):
 
         #  Important when adding a frame
         for F in (HomePage, StatisticsPage, ShowWordsInSongPage, UploadSongPage, ShowWordByPlace, ShowContext, GroupPage
-                  , ShowGroupPage, PhraseFromDropdown, UploadDatasetPage, ShowAllWords, ShowAllSongs):
+                  , ShowGroupPage, PhraseFromText, UploadDatasetPage, ShowAllWords, ShowAllSongs):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -67,7 +67,7 @@ class HomePage(Frame):
 
         add_group_btn = Button(self, text="Add a/to group", width=b_width, command=lambda: controller.show_frame(GroupPage)).grid(row=fifth_row, column=1, padx=b_padx, pady=b_pady)
         group_words_btn = Button(self, text="Show words in group", width=b_width, command=lambda: controller.show_frame(ShowGroupPage)).grid(row=fifth_row, column=2, padx=b_padx, pady=b_pady)
-        phrase_from_dropdown_btn = Button(self, text="Make phrase", width=b_width, command=lambda: controller.show_frame(PhraseFromDropdown)).grid(row=fifth_row, column=3, padx=b_padx, pady=b_pady)
+        phrase_from_dropdown_btn = Button(self, text="Make phrase", width=b_width, command=lambda: controller.show_frame(PhraseFromText)).grid(row=fifth_row, column=3, padx=b_padx, pady=b_pady)
 
         page_stats_btn = Button(self, text="Statistics", width=b_width, command=lambda: controller.show_frame(StatisticsPage)).grid(row=six_row, column=1, padx=b_padx, pady=b_pady)
         show_all_songds_btn = Button(self, text="Show all songs", width=b_width, command=lambda: controller.show_frame(ShowAllSongs)).grid(row=six_row, column=2, padx=b_padx, pady=b_pady)
@@ -558,6 +558,7 @@ class ShowGroupPage(Frame):
         Frame.__init__(self, parent)
 
         def get_group():
+            group_words_preview.delete(1.0, END)
             if group_name_value.get() is None or group_name_value.get() == "":
                 output_label_str.set("Invalid group name.")
             else:
@@ -593,6 +594,42 @@ class ShowGroupPage(Frame):
         group_words_preview = Text(self, height=20, width=70)
         group_words_preview.grid(row=7, column=1)
 
+class PhraseFromText(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        # Page definitions #
+        self.home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
+        self.page_title_label = Label(self,
+                                      text="Highlight words out of a given song/s to create a new phrase.").grid(
+            row=0, column=1)
+
+        # author and title strings #
+        self.author_value = StringVar()
+        self.title_value = StringVar()
+
+        # all that has to do with author and title #
+        self.author_label = Label(self, text="Author:").grid(row=1, column=0)
+        self.title_label = Label(self, text="Song title:").grid(row=2, column=0)
+        self.author_field = Entry(self, textvariable=self.author_value).grid(row=1, column=1)
+        self.title_field = Entry(self, textvariable=self.title_value).grid(row=2, column=1)
+
+        self.song_text_btn = Button(self, text="Find song", command=self.get_song_words).grid(row=3, column=1)
+        self.song_txt = Text(self, height=30, width=100)
+        self.song_txt.grid(row=4, column=1)
+        self.song_txt.config(state='disabled')
+
+
+    def get_song_words(self):
+        lyrics = Deparse(self.author_value.get().lower(), self.title_value.get().lower())
+        self.song_txt.config(state='normal')
+        self.song_txt.delete(1.0, END)
+        if lyrics is not None:
+            self.song_txt.insert(INSERT, lyrics)
+            self.song_txt.config(state='disabled')
+        else:
+            self.song_txt.insert(INSERT, "No such song was found or the input was bad.")
+            self.song_txt.config(state='disabled')
 
 class PhraseFromDropdown(Frame):
     def __init__(self, parent, controller):
