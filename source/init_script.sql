@@ -53,12 +53,3 @@ CREATE TABLE IF NOT EXISTS wordsInPhrase (
     FOREIGN KEY(word_id) REFERENCES words,
     FOREIGN KEY(phrase_id) REFERENCES phrases
 );
-
-
-CREATE TABLE IF NOT EXISTS statistics(
-    song_id INTEGER NOT NULL UNIQUE,
-    num_words_in_song INTEGER NOT NULL,
-    avg_chars_in_sentence FLOAT NOT NULL,
-    avg_chars_in_verse FLOAT NOT NULL,
-    FOREIGN KEY(song_id) REFERENCES songs
-);
