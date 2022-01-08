@@ -19,6 +19,31 @@ def SearchSongWords(author: str, title: str):
         song_words_as_text = "Song with this title and author not found."
     return song_words_as_text
 
+def Deparse(author: str, title: str):
+    if author == "" or title == "":
+        return None  # either song doesn't exist or bad song input
+    song_id = search_song_id(author, title)
+    if song_id is None:
+        return None
+    else:
+        words_in_song = [list(x) for x in getAllWordPositionsInSong(song_id)]
+        words_in_song.sort()
+        lyrics = ""
+        curr_verse = 1
+        curr_sentence = 1
+        for w_info in words_in_song:
+            word = search_word_by_id(w_info[-1])
+            if w_info[0] == curr_verse + 1:
+                curr_verse += 1
+                curr_sentence = 1
+                lyrics += "\n\n" + word + " "
+            elif w_info[1] == curr_sentence + 1:
+                curr_sentence += 1
+                lyrics += "\n" + word + " "
+            else:
+                lyrics += word + " "
+        return lyrics
+
 
 # Finds song by author and title and shows it words in alphabetic order as list, in case of error returns "None"
 def SearchSongWordsOrReturnNone(author: str, title: str):

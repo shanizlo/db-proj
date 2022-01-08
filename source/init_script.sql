@@ -41,15 +41,23 @@ CREATE TABLE IF NOT EXISTS groups (
 
 CREATE TABLE IF NOT EXISTS phrases (
     phrase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    phrase_name TEXT NOT NULL UNIQUE,
-    CHECK(phrase_name <> '')
-
-);
-
-CREATE TABLE IF NOT EXISTS wordsInPhrase (
-    phrase_id INTEGER NOT NULL,
     word_id INTEGER NOT NULL,
     word_position INTEGER,
-    FOREIGN KEY(word_id) REFERENCES words,
-    FOREIGN KEY(phrase_id) REFERENCES phrases
+    FOREIGN KEY(word_id) REFERENCES words
 );
+
+-- CREATE TABLE IF NOT EXISTS phrases (
+--     phrase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+--     phrase_name TEXT NOT NULL UNIQUE,
+--     CHECK(phrase_name <> '')
+--
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS wordsInPhrase (
+--     phrase_id INTEGER NOT NULL,
+--     word_id INTEGER NOT NULL,
+--     word_position INTEGER,
+--     FOREIGN KEY(word_id) REFERENCES words,
+--     FOREIGN KEY(phrase_id) REFERENCES phrases
+-- );
+
