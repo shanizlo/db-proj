@@ -552,11 +552,15 @@ class GroupPage(Frame):
         input_checker_text = StringVar()
         input_checker_label = Label(self, textvariable=input_checker_text).grid(row=8, column=1)
 
+        # show group frame button #
+        show_group_btn = Button(self, text="Show Words In Group", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=2, column=2)
 
 class ShowGroupPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
+        # add group button #
+        add_group_btn = Button(self, text="Add a/to group", command=lambda: controller.show_frame(GroupPage)).grid(row=2, column=2)
         def get_group():
             if group_name_value.get() is None or group_name_value.get() == "":
                 output_label_str.set("Invalid group name.")

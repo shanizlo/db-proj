@@ -32,8 +32,8 @@ def insert_into_database(author, title, album, copyright, lyrics):
 
 def insert_song(song: Song):
     with connection:
-        cursor.execute("INSERT INTO songs VALUES (:song_id, :author, :title, :album, :copyright) returning song_id;",
-                       {'song_id': None, 'author': song.author, 'title': song.title, 'album': song.album,
+        cursor.execute("INSERT INTO songs VALUES (:song_id, :title, :author, :album, :copyright) returning song_id;",
+                       {'song_id': None, 'title': song.title, 'author': song.author, 'album': song.album,
                         'copyright': song.copyright})
         inserted_song_id = cursor.fetchone()
         # This is needed in case word ignored and there no word_id created
