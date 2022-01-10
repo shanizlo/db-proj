@@ -1,6 +1,6 @@
 from database import *
 from helpers_validators import *
-
+from entities import *
 
 # Finds song by author and title and shows it words in alphabetic order as text
 def SearchSongWords(author: str, title: str):
@@ -45,6 +45,18 @@ def Deparse(author: str, title: str):
         return lyrics
 
 
+def Insert_Word(word: str):
+    return insert_word(Word(word))
+
+
+def Get_Line(song_id: int, verse: int, line: int):
+    words = get_words_in_line(song_id, verse, line)
+    s = ""
+    for w in words:
+        s = s + search_word_by_id(w[0]) + " "
+    return s
+
+
 # Finds song by author and title and shows it words in alphabetic order as list, in case of error returns "None"
 def SearchSongWordsOrReturnNone(author: str, title: str):
     if author == "" or title == "":
@@ -79,7 +91,7 @@ def SearchWordByPositionInSong(author, title, verseNum, lineNum, wordNum):
 
 def ReturnWordContext(author: str, title: str, word_value):
     # get all wordId where value=value and song_id=song_id
-    # TODO: find a way to reuse song_id from a previos search and maybe words as well
+    # TODO: find a way to reuse song_id from a previous search and maybe words as well
     song_id = search_song_id(author, title)
     # get all words from the song
     words_ids = search_words_ids_song_contains(song_id)
@@ -179,16 +191,19 @@ def Get_All_Indices_From_Words_In_Group(name: str):
 
             return word_formatted
 
+def Insert_Phrase(phrase: str, no_words):
+    create_phrase(phrase, no_words)
 
-def From_UI_Into_Phrase(name: str, words):
-    new_phrase_id = create_phrase(name)
-    if not isinstance(new_phrase_id, int):  # meaning creating the phrase failed - a phrase with this name already exists
-        return False
-    else:
-        for i in range(len(words)):
-            w_id = get_id_from_word(words[i])
-            add_word_to_phrase(new_phrase_id, w_id, i + 1)
-        return True
+def Get_All_Songs_Id_Author_Title():
+    all_song_entries = getAllSongEntries()
+    return [[song[0], song[2], song[1]] for song in all_song_entries]
+
+def Get_Maxes(song_id: int):
+    """
+    Returns the number of verses and maximum number of sentences in each verse of a given song
+    """
+    return [max_verse(song_id), max_sentence(song_id)]
+
 
 def getAllwordsInDbAscAz():
     found_words = getAllWordsInDBAZ()

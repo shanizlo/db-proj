@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog, Canvas
+from tkinter import ttk
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from pandas import DataFrame
@@ -598,26 +599,35 @@ class PhraseFromText(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
+        self.pos = None
         # Page definitions #
         self.home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
         self.page_title_label = Label(self,
-                                      text="Highlight words out of a given song/s to create a new phrase.").grid(
+                                      text="Write a phrase to show its position in all songs.").grid(
             row=0, column=1)
 
         # author and title strings #
         self.author_value = StringVar()
         self.title_value = StringVar()
+        #
+        # # all that has to do with author and title #
+        # self.author_label = Label(self, text="Author:").grid(row=1, column=0)
+        # self.title_label = Label(self, text="Song title:").grid(row=2, column=0)
+        # self.author_field = Entry(self, textvariable=self.author_value).grid(row=1, column=1)
+        # self.title_field = Entry(self, textvariable=self.title_value).grid(row=2, column=1)
 
-        # all that has to do with author and title #
-        self.author_label = Label(self, text="Author:").grid(row=1, column=0)
-        self.title_label = Label(self, text="Song title:").grid(row=2, column=0)
-        self.author_field = Entry(self, textvariable=self.author_value).grid(row=1, column=1)
-        self.title_field = Entry(self, textvariable=self.title_value).grid(row=2, column=1)
+        self.phrase_value = StringVar()
+        self.phrase_label = Label(self, text="Phrase to find:").grid(row=1, column=0)
+        self.phrase_field = Entry(self, textvariable=self.phrase_value).grid(row=1, column=1)
 
-        self.song_text_btn = Button(self, text="Find song", command=self.get_song_words).grid(row=3, column=1)
+        self.song_text_btn = Button(self, text="Find phrase in songs", command=self.songs_with_phrase).grid(row=3, column=2)
         self.song_txt = Text(self, height=30, width=100)
         self.song_txt.grid(row=4, column=1)
         self.song_txt.config(state='disabled')
+
+        self.list_of_positions = Listbox(self)
+        self.list_of_positions.config(width=50)
+        self.list_of_positions.grid(row=3, column=1)
 
     def get_song_words(self):
         lyrics = Deparse(self.author_value.get().lower(), self.title_value.get().lower())
@@ -629,6 +639,43 @@ class PhraseFromText(Frame):
             self.song_txt.insert(INSERT, "No such song was found or the input was bad.")
         self.song_txt.config(state='disabled')
 
+    def songs_with_phrase(self):
+        given_phrase = self.phrase_value.get().lower()
+        output = ""
+        self.list_of_positions.delete(0, END)
+        for c in given_phrase:
+            if not (48 <= ord(c) & ord(c) <= 57) | (97 <= ord(c) & ord(c) <= 122) | (ord(c) == 39) | (
+                        c == ' '):
+                output = "Input has bad characters."
+                break
+        else:
+            output = "Input is good, now checking places where inputted phrase exists."
+            # removing whitespaces
+            removed_whitespaces = ' '.join(given_phrase.split())
+            improved_phrase = ""
+            # inserting all words in the phrase, and defining a better phrase, without more whitespaces than necessary
+            no_words = 0
+            for w in removed_whitespaces.split():
+                Insert_Word(w)
+                improved_phrase = improved_phrase + w + " "
+                no_words += 1
+            # insert phrase into db
+            Insert_Phrase(improved_phrase.strip(), no_words)
+            # finding all the positions the phrase is in, in all songs. Author, title, verse, sentence
+            self.pos = self.find_songs_using_phrase(improved_phrase.strip())
+            for p in self.pos:
+                self.list_of_positions.insert(END, "In " + p[1] + " by " + p[0] + " at verse " + str(p[2]) + " in sentence " + str(p[3]) + ".")
+
+    def find_songs_using_phrase(self, phrase):
+        songs_with_position = []
+        all_songs = Get_All_Songs_Id_Author_Title()
+        for song in all_songs:
+            maxes = Get_Maxes(song[0])
+            for v in range(1, maxes[0] + 1):
+                for s in range(1, maxes[1] + 1):
+                    if phrase in Get_Line(song[0], v, s):
+                        songs_with_position.append([song[1], song[2], v, s])
+        return songs_with_position
 
 class PhraseFromDropdown(Frame):
     def __init__(self, parent, controller):
