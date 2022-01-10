@@ -256,28 +256,20 @@ def all_words_in_group(groupId: int):
         cursor.execute("SELECT word_id FROM wordsInGroup WHERE group_id = :groupId", {'groupId': groupId})
         return cursor.fetchall()
 
-def create_phrase(phrase_name: str):
-    try:
-        with connection:
-            cursor.execute("INSERT INTO phrases VALUES (:phrase_id, :phrase_name) returning phrase_id;",
-                           {'phrase_id': None, 'phrase_name': phrase_name})
-            # In case phrase with this name already exists
-            return cursor.fetchone()[0]
-
-    except sqlite3.Error as err:
-        return err
-
-
-def add_word_to_phrase(phrase_id: int, word_id : int, word_position: int):
+def create_phrase(phrase: str, no_words: int):
     with connection:
-        cursor.execute("INSERT INTO wordsInPhrase VALUES (:phrase_id, :word_id, :word_position)",
-                       {'phrase_id': phrase_id, 'word_id': word_id, 'word_position': word_position})
+        cursor.execute("INSERT OR IGNORE INTO phrases VALUES (:phrase_id, :phrase_text, :words_count)",
+                       {'phrase_id': None, 'phrase_text': phrase, 'words_count': no_words})
 
-
-def get_phrase(phrase_id: int):
+def max_verse(song_id: int):
     with connection:
-        cursor.execute("SELECT word_id, word_position FROM wordsInPhrase WHERE phrase_id = :phrase_id", {'phrase_id': phrase_id})
-        return cursor.fetchall()
+        cursor.execute("SELECT MAX(verse_num) FROM contains WHERE song_id = :song_id", {'song_id': song_id})
+        return cursor.fetchone()[0]
+
+def max_sentence(song_id: int):
+    with connection:
+        cursor.execute("SELECT MAX(sentence_num) FROM contains WHERE song_id = :song_id", {'song_id': song_id})
+        return cursor.fetchone()[0]
 
 # Function for debugging, nor for functionality
 def getAllSongEntries():

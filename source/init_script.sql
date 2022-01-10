@@ -41,9 +41,8 @@ CREATE TABLE IF NOT EXISTS groups (
 
 CREATE TABLE IF NOT EXISTS phrases (
     phrase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    word_id INTEGER NOT NULL,
-    word_position INTEGER,
-    FOREIGN KEY(word_id) REFERENCES words
+    phrase_text TEXT NOT NULL UNIQUE,
+    words_count INTEGER NOT NULL
 );
 
 -- CREATE TABLE IF NOT EXISTS phrases (

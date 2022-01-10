@@ -5,16 +5,13 @@ class Song:
         self.album = album
         self.copyright = copyright
 
+
 class Word:
     def __init__(self, value):
         self.value = value
         self.length = len(value)
 
+
 class Group:
     def __init__(self, group_name):
         self.group_name = group_name
-
-
-class Phrase:
-    def __init__(self, phrase_name):
-        self.phrase_name = phrase_name
