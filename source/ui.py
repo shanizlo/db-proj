@@ -629,8 +629,18 @@ class PhraseFromText(Frame):
         self.list_of_positions.config(width=50)
         self.list_of_positions.grid(row=3, column=1)
 
-    def get_song_words(self):
-        lyrics = Deparse(self.author_value.get().lower(), self.title_value.get().lower())
+        # on listbox callback, namely, the person clicked on one of the positions of the phrase he found.
+        # Prints the relevant song.
+        def callback(event):
+            selection = event.widget.curselection()
+            if selection:
+                index = selection[0]
+                self.get_song_words(self.pos[index][0], self.pos[index][1])
+        self.list_of_positions.bind('<<ListboxSelect>>', callback)
+
+
+    def get_song_words(self, author, title):
+        lyrics = Deparse(author.lower(), title.lower())
         self.song_txt.config(state='normal')
         self.song_txt.delete(1.0, END)
         if lyrics is not None:
