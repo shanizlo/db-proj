@@ -595,6 +595,7 @@ class ShowGroupPage(Frame):
         group_words_preview = Text(self, height=20, width=70)
         group_words_preview.grid(row=7, column=1)
 
+
 class PhraseFromText(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -605,16 +606,6 @@ class PhraseFromText(Frame):
         self.page_title_label = Label(self,
                                       text="Write a phrase to show its position in all songs.").grid(
             row=0, column=1)
-
-        # author and title strings #
-        self.author_value = StringVar()
-        self.title_value = StringVar()
-        #
-        # # all that has to do with author and title #
-        # self.author_label = Label(self, text="Author:").grid(row=1, column=0)
-        # self.title_label = Label(self, text="Song title:").grid(row=2, column=0)
-        # self.author_field = Entry(self, textvariable=self.author_value).grid(row=1, column=1)
-        # self.title_field = Entry(self, textvariable=self.title_value).grid(row=2, column=1)
 
         self.phrase_value = StringVar()
         self.phrase_label = Label(self, text="Phrase to find:").grid(row=1, column=0)
@@ -653,28 +644,29 @@ class PhraseFromText(Frame):
         given_phrase = self.phrase_value.get().lower()
         output = ""
         self.list_of_positions.delete(0, END)
-        for c in given_phrase:
-            if not (48 <= ord(c) & ord(c) <= 57) | (97 <= ord(c) & ord(c) <= 122) | (ord(c) == 39) | (
-                        c == ' '):
-                output = "Input has bad characters."
-                break
-        else:
-            output = "Input is good, now checking places where inputted phrase exists."
-            # removing whitespaces
-            removed_whitespaces = ' '.join(given_phrase.split())
-            improved_phrase = ""
-            # inserting all words in the phrase, and defining a better phrase, without more whitespaces than necessary
-            no_words = 0
-            for w in removed_whitespaces.split():
-                Insert_Word(w)
-                improved_phrase = improved_phrase + w + " "
-                no_words += 1
-            # insert phrase into db
-            Insert_Phrase(improved_phrase.strip(), no_words)
-            # finding all the positions the phrase is in, in all songs. Author, title, verse, sentence
-            self.pos = self.find_songs_using_phrase(improved_phrase.strip())
-            for p in self.pos:
-                self.list_of_positions.insert(END, "In " + p[1] + " by " + p[0] + " at verse " + str(p[2]) + " in sentence " + str(p[3]) + ".")
+        if given_phrase != '':
+            for c in given_phrase:
+                if not (48 <= ord(c) & ord(c) <= 57) | (97 <= ord(c) & ord(c) <= 122) | (ord(c) == 39) | (
+                            c == ' '):
+                    output = "Input has bad characters."
+                    break
+            else:
+                output = "Input is good, now checking places where inputted phrase exists."
+                # removing whitespaces
+                removed_whitespaces = ' '.join(given_phrase.split())
+                improved_phrase = ""
+                # inserting all words in the phrase, and defining a better phrase, without more whitespaces than necessary
+                no_words = 0
+                for w in removed_whitespaces.split():
+                    Insert_Word(w)
+                    improved_phrase = improved_phrase + w + " "
+                    no_words += 1
+                # insert phrase into db
+                Insert_Phrase(improved_phrase.strip(), no_words)
+                # finding all the positions the phrase is in, in all songs. Author, title, verse, sentence
+                self.pos = self.find_songs_using_phrase(improved_phrase.strip())
+                for p in self.pos:
+                    self.list_of_positions.insert(END, "In " + p[1] + " by " + p[0] + " at verse " + str(p[2]) + " in sentence " + str(p[3]) + ".")
 
     def find_songs_using_phrase(self, phrase):
         songs_with_position = []
@@ -687,86 +679,6 @@ class PhraseFromText(Frame):
                         songs_with_position.append([song[1], song[2], v, s])
         return songs_with_position
 
-class PhraseFromDropdown(Frame):
-    def __init__(self, parent, controller):
-        Frame.__init__(self, parent)
-
-        # Page definitions #
-        self.home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
-        self.page_title_label = Label(self,
-                                 text="Choose words out of a given song/s to create a new phrase.").grid(
-            row=0, column=1)
-
-        # author and title strings #
-        self.author_value = StringVar()
-        self.title_value = StringVar()
-
-        # all that has to do with author and title #
-        self.author_label = Label(self, text="Author:").grid(row=1, column=0)
-        self.title_label = Label(self, text="Song title:").grid(row=2, column=0)
-        self.author_field = Entry(self, textvariable=self.author_value).grid(row=1, column=1)
-        self.title_field = Entry(self, textvariable=self.title_value).grid(row=2, column=1)
-
-        # all that has to do with the words of song that is inputted from the user #
-        self.find_song_words_btn = Button(self, text="Find song words", command=self.get_words_from_input).grid(row=3, column=1)
-        self.song_word_label = Label(self, text="Words of song:").grid(row=4, column=0)
-        self.song_words = Listbox(self)
-        self.song_words.grid(row=5, column=0)
-
-        self.add_btn = Button(self, text="Add chosen words", command=self.add_words_to_phrase).grid(row=6, column=0)
-
-        # all that has to do with the words chosen to be added to the group #
-        self.d_chosen_words_label = Label(self, text="Words chosen thus far:").grid(row=4, column=1)
-        self.d_chosen_words = Listbox(self, selectmode="multiple")
-        self.d_chosen_words.grid(row=5, column=1)
-        self.d_remove_btn = Button(self, text="Remove chosen words", command=self.remove_words_chosen).grid(row=6, column=1)
-
-        # all that has to do with the phrase definition #
-        self.phrase_name_str = StringVar()
-        self.phrase_name_label = Label(self, text="Phrase name:").grid(row=7, column=0)
-        self.phrase_name_field = Entry(self, textvariable=self.phrase_name_str).grid(row=7, column=1)
-        self.phrase_btn = Button(self, text="Add words to given phrase", command=self.phrase_ui_into_db).grid(row=8, column=0)
-
-        # input checker #
-        self.input_checker_text = StringVar()
-        self.input_checker_label = Label(self, textvariable=self.input_checker_text).grid(row=8, column=1)
-
-    def add_words_to_phrase(self):
-        to_add = list(self.song_words.curselection())
-        added = list(self.d_chosen_words.get(0, END))
-        for index in to_add:
-            if self.song_words.get(index) not in added:
-                self.d_chosen_words.insert(END, self.song_words.get(index))
-                added.insert(len(added), self.song_words.get(index))
-        self.song_words.selection_clear(0, END)
-
-    def remove_words_chosen(self):
-        selected = self.d_chosen_words.curselection()
-        no_words_deleted = 0
-        for index in selected:
-            self.d_chosen_words.delete(index - no_words_deleted)
-            no_words_deleted += 1
-
-    def get_words_from_input(self):
-        # first remove the stuff that is already there
-        self.song_words.delete(0, END)
-        # now add from input the song words
-        song_words_list = SearchSongWords(self.author_value.get(), self.title_value.get()).split('\n')
-        if song_words_list[0] == "Song with this title and author not found.":
-            self.input_checker_text.set("Song with this title and author not found.")
-        else:
-            for w in song_words_list:
-                self.song_words.insert(END, w)
-
-    def phrase_ui_into_db(self):
-        if (not stringOk(self.phrase_name_str.get())) or self.d_chosen_words.size() == 0:
-            self.input_checker_text.set("Please enter valid phrase name and choose at least one word.")
-        else:
-            words = [self.d_chosen_words.get(i) for i in range(self.d_chosen_words.size())]
-            if From_UI_Into_Phrase(self.phrase_name_str.get().lower(), words):
-                self.input_checker_text.set("Inserted the words successfully into a new phrase, namely")
-            else:
-                self.input_checker_text.set("Phrase with this name already exists and hence nothing was saved.")
 
 global needRedrawHome
 needRedrawHome = True
