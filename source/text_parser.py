@@ -1,4 +1,19 @@
 def parse(lyrics):  # returns a list of lists of the form [theWord, verse_num, sentence_num, word_position]
+    """
+        This file contains this single method that parses given text from a text file which contains lyrics to songs.
+        Moving from verse to verse uses two newline characters.
+        Moving from sentence to sentence uses one newline character.
+
+        Parameters
+        -----------
+        lyrics
+            A string containing lyrics to songs.
+
+        Returns
+        -----------
+        list
+            List of lists of the form [word, which verse, which sentence, which position].
+    """
     which_sentence = 0  # counts the sentence we are on
     which_verse = 1  # counts the verse we are on
     the_words = []  # the list of lists of the form
