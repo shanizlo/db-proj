@@ -3,6 +3,10 @@ import sqlite3
 from text_parser import parse
 from entities import *
 
+"""
+    This file connects to the database file and contains methods which are all one-line SQL queries, for use in
+    the helpers_db.py file or for debugging.
+"""
 # connection = sqlite3.connect(":memory:")
 connection = sqlite3.connect("songs.db")
 cursor = connection.cursor()
@@ -144,7 +148,7 @@ def get_word_length(word_id: int):
     with connection:
         cursor.execute("SELECT word_length FROM words WHERE word_id = :word_id", {'word_id': word_id})
         return cursor.fetchone()[0]
-# Function for debugging, nor for functionality
+# Function for debugging, not for functionality
 def getAllSongEntries():
     with connection:
         cursor.execute("SELECT * FROM songs;")
