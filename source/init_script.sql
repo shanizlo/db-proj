@@ -9,12 +9,18 @@ CREATE TABLE IF NOT EXISTS songs (
     CHECK(author <> '')
 );
 
+
+CREATE INDEX IF NOT EXISTS idx_songs_title_author ON songs (author, title);
+
+
 CREATE TABLE IF NOT EXISTS words (
     word_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     word_value TEXT NOT NULL UNIQUE,
     word_length INTEGER,
     CHECK(word_value <> '')
 );
+
+CREATE INDEX IF NOT EXISTS idx_word_value ON words (word_value);
 
 CREATE TABLE IF NOT EXISTS contains (
     word_id INTEGER NOT NULL,
