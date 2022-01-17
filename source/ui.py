@@ -144,8 +144,8 @@ class UploadSongPage(Frame):
 
         page_title_label = Label(self, text="Upload Song").grid(row=0, column=2)
 
-        author_label = Label(self, text="Author").grid(row=1, column=1)
-        title_label = Label(self, text="Song title").grid(row=2, column=1)
+        title_label = Label(self, text="Song title").grid(row=1, column=1)
+        author_label = Label(self, text="Author").grid(row=2, column=1)
         album_label = Label(self, text="Album").grid(row=3, column=1)
         copyright_label = Label(self, text="Copyright").grid(row=4, column=1)
         filename_label = Label(self, text="Text File:").grid(row=5, column=1)
@@ -553,33 +553,39 @@ class GroupPage(Frame):
         input_checker_text = StringVar()
         input_checker_label = Label(self, textvariable=input_checker_text).grid(row=8, column=1)
 
+        # referral button to group indices page
+        move_to_showgrouppage_btn = Button(self, text="Show Group Indices", command=lambda: controller.show_frame(ShowGroupPage)).grid(row=5, column=2)
 
 class ShowGroupPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
         def get_group():
-            group_words_preview.delete(1.0, END)
+            words_in_group_preview.delete(1.0, END)
+            group_indices_preview.delete(1.0, END)
             if group_name_value.get() is None or group_name_value.get() == "":
                 output_label_str.set("Invalid group name.")
             else:
-                words_in_group = Get_All_Indices_From_Words_In_Group(group_name_value.get().lower())
-                if words_in_group is None:
+                words_in_group = Get_All_Words_In_Group(group_name_value.get())
+                words_indices_in_group = Get_All_Indices_From_Words_In_Group(group_name_value.get().lower())
+                if words_indices_in_group is None:
                     output_label_str.set("Group with this name not found.")
-                elif words_in_group == 0:
+                elif words_indices_in_group == 0:
                     output_label_str.set("No songs in database.")
                 else:
-                    words_in_group = sorted(words_in_group)
-                    for w in words_in_group:
-                        group_words_preview.insert(END,  "Found word \"" + w[2] + "\" in song " + w[0] + " by " + w[1]
+                    words_indices_in_group = sorted(words_indices_in_group)
+                    for w in words_indices_in_group:
+                        group_indices_preview.insert(END,  "Found word \"" + w[2] + "\" in song \"" + w[0] + "\" by " + w[1]
                                                    + " at verse " + str(w[3]) + " in sentence " + str(w[4]) +
                                                    " at position " + str(w[5]) + ".\n")
-                    output_label_str.set("The words in the group in all their places in all songs:")
+                    for w in words_in_group:
+                        words_in_group_preview.insert(END, w + "\n")
+                    output_label_str.set("")
 
         # Page definitions #
         home_btn = Button(self, text="Home", command=lambda: controller.show_frame(HomePage)).grid(row=0, column=0)
         page_title_label = Label(self,
-                                 text="Input the name of the group and this'll show you the words in it.").grid(
+                                 text="Input the name of the group and this window will show you the words in it and its positions in all songs.").grid(
             row=0, column=1)
 
         # Group entry and button #
@@ -591,10 +597,19 @@ class ShowGroupPage(Frame):
         # output gotten or not label #
         output_label_str = StringVar()
         output_label = Label(self, textvariable=output_label_str).grid(row=2, column=1)
-        # words in the group preview
-        group_words_preview = Text(self, height=20, width=70)
-        group_words_preview.grid(row=7, column=1)
 
+        # words in the group
+        group_words_label = Label(self, text="Words found in group:").grid(row=3, column=1)
+        words_in_group_preview = Text(self, height=20, width=70)
+        words_in_group_preview.grid(row=7, column=1)
+
+        # indices in the group preview
+        group_indices_label = Label(self, text="Positions of all group words in all songs:").grid(row=8, column=1)
+        group_indices_preview = Text(self, height=20, width=70)
+        group_indices_preview.grid(row=9, column=1)
+
+        # back to other group page button
+        add_to_group_page_btn = Button(self, text="Add to group page:", command=lambda: controller.show_frame(GroupPage)).grid(row=7, column=2)
 
 class PhraseFromText(Frame):
     def __init__(self, parent, controller):
