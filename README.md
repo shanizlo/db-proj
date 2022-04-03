@@ -5,7 +5,7 @@ Highly recommended to use miniconda for envs.
 
 Install miniconda.
 Run conda install.
-Run the app.
+Run the app (run ui.py).
 
 You can use csv files to upload datasets.
 Uploading large dataset takes time, so be patient or upload smaller ones.
