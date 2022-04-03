@@ -1,6 +1,6 @@
 # db-proj
 
-pythonh v3.8.10.
+python v3.8.10.
 Highly recommended to use miniconda for envs.
 
 Install miniconda.
