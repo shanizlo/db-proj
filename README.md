@@ -23,3 +23,7 @@ https://docs.google.com/presentation/d/1Xro1GHxqt8wFOaybjzvq9N5ezJyi0TijsptLaHMh
 The code is ugly and wrong, later we will refactor it to be nice and right.
 
 Life is hard and then you die.
+
+
+הורידו לנו 5 נקודות על כך שהשמטנו סימני פיסוק (היה צריך להתייחס אליהם כמו למילים)
+ועוד 5 נקודות על כך שחיפוש של ביטוי לשוני מחפש רק בתוך השורה ולא גם אם הביטוי מתפרס על כמה שורות. 
