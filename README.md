@@ -1,9 +1,11 @@
 # db-proj
 
 pythonh v3.8.10.
-recommended to use miniconda for envs.
+Highly recommended to use miniconda for envs.
 
-NEVER PUSH DIRECTLY TO MAIN (MASTER) BRANCH!
+Install miniconda.
+Run conda install.
+Run the app.
 
-Please work with branches (no code review, just to be sure we are not overriding each other's changes).
-If pulling use git pull --rebase to make sure your changes are not removed.
+The code is ugly and wrong, later we will refactor it to be nice and right.
+Life is hard and then you die.
